@@ -1,0 +1,186 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Cubeab Pagination and Load More\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-28 03:33+0000\n"
+"PO-Revision-Date: 2025-08-28 03:51+0000\n"
+"Last-Translator: \n"
+"Language-Team: Russian\n"
+"Language: ru_RU\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10 >= 2 && "
+"n%10<=4 &&(n%100<10||n%100 >= 20)? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.8.0; wp-6.8.2; php-8.2.27\n"
+"X-Domain: cubeb-pagination-and-load-more"
+
+#: includes/admin-settings.php:117
+msgid "Active Color"
+msgstr "Цвет активного элемента"
+
+#. Description of the plugin
+msgid "AJAX pagination and Load More button working synchronously."
+msgstr "AJAX пагинация и кнопка Загрузить Ещё работают синхронно."
+
+#: includes/admin-settings.php:41
+msgid "AJAX Pagination Settings"
+msgstr "Настройки AJAX пагинации"
+
+#: includes/admin-settings.php:98
+msgid "By default it is \"more\""
+msgstr "По умолчанию \"more\""
+
+#: includes/admin-settings.php:112
+msgid "Change the text in the Load More button"
+msgstr "Измените текст на кнопке «Загрузить еще»"
+
+#: includes/admin-settings.php:105
+msgid "Change the text that appears before results are loaded"
+msgstr "Измените текст, который появляется перед загрузкой результатов."
+
+#: includes/admin-settings.php:177
+msgid "Check this if you need pagination without URL change"
+msgstr "Отметьте это, если вам нужна пагинация без изменения URL."
+
+#: includes/admin-settings.php:167
+msgid "Check this if you want to use your own CSS styles"
+msgstr "Отметьте это, если вы хотите использовать собственные стили CSS."
+
+#: includes/admin-settings.php:121
+msgid "Choose color for active pagination elements"
+msgstr "Выберите цвет для активных элементов пагинации"
+
+#: includes/admin-settings.php:127
+msgid "Choose color for hovered active pagination elements"
+msgstr "Выберите цвет для активных элементов пагинации при наведении курсора"
+
+#: includes/admin-settings.php:32
+msgid "Choose Image"
+msgstr "Выбрать изображение"
+
+#: includes/admin-settings.php:149
+msgid "Control pagination and Load More button visibility on mobile devices."
+msgstr ""
+"Управление видимостью пагинации и кнопки «Загрузить еще» на мобильных "
+"устройствах."
+
+#: includes/admin-settings.php:157
+msgid "Control pagination and Load More button visibility on PC devices."
+msgstr ""
+"Управление видимостью пагинации и кнопки «Загрузить еще» на компьютерах."
+
+#: includes/admin-settings.php:52
+msgid "CSS selector for the loop container to paginate."
+msgstr "CSS-селектор для контейнера цикла для пагинации."
+
+#. Name of the plugin
+msgid "Cubeab Pagination and Load More"
+msgstr ""
+
+#: includes/admin-settings.php:161
+msgid "Disable Default Styles"
+msgstr "Отключить стили по умолчанию"
+
+#: includes/admin-settings.php:165
+msgid "Disable plugin's default pagination styles"
+msgstr "Отключить стили пагинации плагина по умолчанию"
+
+#: includes/admin-settings.php:175
+msgid "Disable plugin's pages update in the URL"
+msgstr "Отключить обновление страниц плагина в URL"
+
+#: includes/admin-settings.php:138
+msgid "Enable Load More Button"
+msgstr "Включить кнопку «Загрузить еще»"
+
+#: includes/admin-settings.php:131
+msgid "Enable Pagination"
+msgstr "Включить пагинацию"
+
+#. Author of the plugin
+msgid "Evgeny Sudakoff"
+msgstr "Евгений Судаков"
+
+#: includes/admin-settings.php:123
+msgid "Hover Color"
+msgstr "Цвет при наведении"
+
+#: includes/admin-settings.php:109
+msgid "Load More Button text"
+msgstr "Текст кнопки «Загрузить еще»"
+
+#: includes/admin-settings.php:145
+msgid "Mobile Settings (Screen Width < 768px)"
+msgstr "Настройки мобильного устройства (ширина экрана < 768 пикселей)"
+
+#: includes/admin-settings.php:89
+msgid "Next Arrow Icon"
+msgstr "Значок стрелки «Далее»"
+
+#: includes/admin-settings.php:181
+msgid "Not Found slug"
+msgstr "Слаг страницы ошибки 404"
+
+#: includes/admin-settings.php:59
+msgid "Number of posts to show per page."
+msgstr "Количество постов для отображения на странице."
+
+#: includes/admin-settings.php:31
+msgid "Or some arrow pic url here"
+msgstr "Или ссылка на картинку со стрелкой"
+
+#: includes/admin-settings.php:153
+msgid "PC Settings (Screen Width ≥ 768px)"
+msgstr "Настройки ПК (ширина экрана ≥ 768 пикселей)"
+
+#: includes/admin-settings.php:184
+msgid "Place here custom 404 Not Found template page slug with slashes."
+msgstr ""
+"Поместите здесь пользовательский шаблон страницы 404 Not Found со слешами."
+
+#: includes/admin-settings.php:63
+msgid "Post Type to Paginate"
+msgstr "Тип записи для пагинации"
+
+#: includes/admin-settings.php:56
+msgid "Posts Per Page"
+msgstr "Записей на странице"
+
+#: includes/admin-settings.php:102
+msgid "Preloader text"
+msgstr "Текст прелодера (Перед загрузкой постов)"
+
+#: includes/admin-settings.php:83
+msgid "Previous Arrow Icon"
+msgstr "Значок стрелки «Предыдущие»"
+
+#: includes/admin-settings.php:49
+msgid "Query Selector (CSS)"
+msgstr "Селектор запросов CSS (Query Selector)"
+
+#: includes/admin-settings.php:33
+msgid "Remove"
+msgstr "Удалить"
+
+#: includes/admin-settings.php:171
+msgid "Remove pages from URL"
+msgstr "Удалить страницы из URL"
+
+#: includes/admin-settings.php:79
+msgid "Select which post type should be paginated."
+msgstr "Выберите, какой тип записи следует разбить на страницы."
+
+#: includes/admin-settings.php:134
+msgid "Show pagination buttons (Previous, Next, and page numbers)."
+msgstr ""
+"Показывать кнопки пагинации («Предыдущая», «Следующая» и номера страниц)."
+
+#: includes/admin-settings.php:141
+msgid "Show the \"Load More\" button."
+msgstr "Показать кнопку «Загрузить еще»."
+
+#: includes/admin-settings.php:95
+msgid "Url parameter for Load More"
+msgstr "Параметр URL для «Загрузить еще»"

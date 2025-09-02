@@ -1,0 +1,181 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Cubeab Pagination and Load More\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-28 03:33+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.8.0; wp-6.8.2; php-8.2.27\n"
+"X-Domain: cubeb-pagination-and-load-more"
+
+#: includes/admin-settings.php:117
+msgid "Active Color"
+msgstr ""
+
+#. Description of the plugin
+msgid "AJAX pagination and Load More button working synchronously."
+msgstr ""
+
+#: includes/admin-settings.php:41
+msgid "AJAX Pagination Settings"
+msgstr ""
+
+#: includes/admin-settings.php:98
+msgid "By default it is \"more\""
+msgstr ""
+
+#: includes/admin-settings.php:112
+msgid "Change the text in the Load More button"
+msgstr ""
+
+#: includes/admin-settings.php:105
+msgid "Change the text that appears before results are loaded"
+msgstr ""
+
+#: includes/admin-settings.php:177
+msgid "Check this if you need pagination without URL change"
+msgstr ""
+
+#: includes/admin-settings.php:167
+msgid "Check this if you want to use your own CSS styles"
+msgstr ""
+
+#: includes/admin-settings.php:121
+msgid "Choose color for active pagination elements"
+msgstr ""
+
+#: includes/admin-settings.php:127
+msgid "Choose color for hovered active pagination elements"
+msgstr ""
+
+#: includes/admin-settings.php:32
+msgid "Choose Image"
+msgstr ""
+
+#: includes/admin-settings.php:149
+msgid "Control pagination and Load More button visibility on mobile devices."
+msgstr ""
+
+#: includes/admin-settings.php:157
+msgid "Control pagination and Load More button visibility on PC devices."
+msgstr ""
+
+#: includes/admin-settings.php:52
+msgid "CSS selector for the loop container to paginate."
+msgstr ""
+
+#. Name of the plugin
+msgid "Cubeab Pagination and Load More"
+msgstr ""
+
+#: includes/admin-settings.php:161
+msgid "Disable Default Styles"
+msgstr ""
+
+#: includes/admin-settings.php:165
+msgid "Disable plugin's default pagination styles"
+msgstr ""
+
+#: includes/admin-settings.php:175
+msgid "Disable plugin's pages update in the URL"
+msgstr ""
+
+#: includes/admin-settings.php:138
+msgid "Enable Load More Button"
+msgstr ""
+
+#: includes/admin-settings.php:131
+msgid "Enable Pagination"
+msgstr ""
+
+#. Author of the plugin
+msgid "Evgeny Sudakoff"
+msgstr ""
+
+#: includes/admin-settings.php:123
+msgid "Hover Color"
+msgstr ""
+
+#: includes/admin-settings.php:109
+msgid "Load More Button text"
+msgstr ""
+
+#: includes/admin-settings.php:145
+msgid "Mobile Settings (Screen Width < 768px)"
+msgstr ""
+
+#: includes/admin-settings.php:89
+msgid "Next Arrow Icon"
+msgstr ""
+
+#: includes/admin-settings.php:181
+msgid "Not Found slug"
+msgstr ""
+
+#: includes/admin-settings.php:59
+msgid "Number of posts to show per page."
+msgstr ""
+
+#: includes/admin-settings.php:31
+msgid "Or some arrow pic url here"
+msgstr ""
+
+#: includes/admin-settings.php:153
+msgid "PC Settings (Screen Width ≥ 768px)"
+msgstr ""
+
+#: includes/admin-settings.php:184
+msgid "Place here custom 404 Not Found template page slug with slashes."
+msgstr ""
+
+#: includes/admin-settings.php:63
+msgid "Post Type to Paginate"
+msgstr ""
+
+#: includes/admin-settings.php:56
+msgid "Posts Per Page"
+msgstr ""
+
+#: includes/admin-settings.php:102
+msgid "Preloader text"
+msgstr ""
+
+#: includes/admin-settings.php:83
+msgid "Previous Arrow Icon"
+msgstr ""
+
+#: includes/admin-settings.php:49
+msgid "Query Selector (CSS)"
+msgstr ""
+
+#: includes/admin-settings.php:33
+msgid "Remove"
+msgstr ""
+
+#: includes/admin-settings.php:171
+msgid "Remove pages from URL"
+msgstr ""
+
+#: includes/admin-settings.php:79
+msgid "Select which post type should be paginated."
+msgstr ""
+
+#: includes/admin-settings.php:134
+msgid "Show pagination buttons (Previous, Next, and page numbers)."
+msgstr ""
+
+#: includes/admin-settings.php:141
+msgid "Show the \"Load More\" button."
+msgstr ""
+
+#: includes/admin-settings.php:95
+msgid "Url parameter for Load More"
+msgstr ""
