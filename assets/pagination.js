@@ -183,7 +183,7 @@ jQuery(document).ready(function ($) {
           },
           beforeSend: function () {
             if (!append && !isMoreSequence) {
-              $(pagimore_ajax_data.query_selector).empty();
+              $("." + pagimore_ajax_data.query_selector).empty();
             }
             $(".page-loading").addClass("loading");
           },
@@ -203,14 +203,18 @@ jQuery(document).ready(function ($) {
             }
             if (response.html) {
               if (append) {
-                $(pagimore_ajax_data.query_selector).append(response.html);
+                $("." + pagimore_ajax_data.query_selector).append(
+                  response.html
+                );
               } else {
-                $(pagimore_ajax_data.query_selector).html(response.html);
+                $("." + pagimore_ajax_data.query_selector).html(response.html);
               }
 
               if (isLast) {
                 $(".ajax-pagination").remove();
-                $(pagimore_ajax_data.query_selector).after(response.pagination);
+                $("." + pagimore_ajax_data.query_selector).after(
+                  response.pagination
+                );
               }
               maxPages = response.max_pages;
               // Update perPage2 from response if changed
@@ -265,7 +269,7 @@ jQuery(document).ready(function ($) {
           }
         }
 
-        $(pagimore_ajax_data.query_selector).empty();
+        $("." + pagimore_ajax_data.query_selector).empty();
 
         for (
           let page = moreParams.startPage;
@@ -363,7 +367,7 @@ jQuery(document).ready(function ($) {
       beforeSend: function () {
         $(".page-loading").addClass("loading");
         if (!append) {
-          $(pagimore_ajax_data.query_selector).empty();
+          $("." + pagimore_ajax_data.query_selector).empty();
         }
       },
       success: function (response) {
@@ -384,11 +388,11 @@ jQuery(document).ready(function ($) {
         if (response.html) {
           if (!append) {
             // Full replace
-            $(pagimore_ajax_data.query_selector).html(response.html);
+            $("." + pagimore_ajax_data.query_selector).html(response.html);
             loadedPages = [page];
           } else {
             // Append mode
-            $(pagimore_ajax_data.query_selector).append(response.html);
+            $("." + pagimore_ajax_data.query_selector).append(response.html);
             if (!loadedPages.includes(page)) {
               loadedPages.push(page);
             }

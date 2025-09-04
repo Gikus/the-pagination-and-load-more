@@ -48,7 +48,7 @@ function pagimore_render_settings_page() {
                 <tr valign="top">
                     <th scope="row"><?php echo esc_html__('Query Selector (CSS)', 'cubeb-pagination-and-load-more'); ?></th>
                     <td>
-                        <input type="text" name="pagimore_query_selector" value="<?php echo esc_attr(get_option('pagimore_query_selector', '.post-list')); ?>" style="width: 300px;">
+                        <input type="text" name="pagimore_query_selector" value="<?php echo esc_attr(get_option('pagimore_query_selector', 'post-list')); ?>" style="width: 300px;">
                         <p class="description"><?php echo esc_html__('CSS selector for the loop container to paginate.', 'cubeb-pagination-and-load-more'); ?></p>
                     </td>
                 </tr>
@@ -193,10 +193,11 @@ function pagimore_render_settings_page() {
 
 add_action('admin_init', function() {
      
-    register_setting('pagimore_settings_group', 'pagimore_query_selector', ['default' => '.post-list', 
+    register_setting('pagimore_settings_group', 'pagimore_query_selector', ['default' => 'post-list', 
             'sanitize_callback' => function ($value) {
-                  $value = trim($value);
-                return $value === '' ? '.post-list' : $value;
+                  $oldval = trim($value);
+                  $value = ltrim($oldval, '.'); // removes leading dot if exists
+                return $value === '' ? 'post-list' : $value;
             }
         ]);
      // Checkbox / boolean toggles (sanitize as 0 or 1)

@@ -426,12 +426,14 @@ if ($ports) {
 
  } 
 
-  
+   $sclass = esc_attr(get_option('pagimore_query_selector', 'post-list'));
+
+    $qselect = ltrim($sclass, '.'); // removes leading dot if exists
  
 // create query for template rendering
 $blog_posts = new WP_Query($args);
     ?>
-<section class="post-list">
+<section class="<?php echo esc_attr($qselect); ?>">
     <?php if ($blog_posts->have_posts()): while ($blog_posts->have_posts()): $blog_posts->the_post(); ?>
    <?php  $current_type = get_post_type(); get_template_part( 'template-parts/content', $current_type ); ?>
   <?php endwhile; endif; wp_reset_postdata(); ?>
@@ -581,6 +583,7 @@ $product_category_base = trim($product_category_base, '/');
             'woo_cat_base' => $product_category_base,
             'pagimore_404_page' => esc_attr(get_option('pagimore_404_page', '/notfound-404/')),
             'remove_pages' => (bool) get_option('pagimore_remove_pages', 0),
+            'query_selector' => esc_attr(get_option('pagimore_query_selector', 'post-list')),
         ]);
         if ( ! get_option('pagimore_disable_styles', 0) ) {
     $active_color       = esc_attr(get_option('pagimore_pagi_active_color', '#0073aa'));
@@ -940,5 +943,18 @@ if (preg_match('#/' . preg_quote($post_tag_base, '#') . '/([^/]+)/page/([0-9]+)/
     }
     return $redirect_url;
 }, 10, 2 );
+
+// Hide /more/ from search index
+
+add_action( 'wp_head', function() {
+    global $wp;
+
+    $load_more_slug = esc_attr(get_option('pagimore_more_url_param', 'more'));
+
+    // Check if the URL contains /$load_more_slug/
+    if ( strpos( $wp->request, "/{$load_more_slug}/" ) !== false || preg_match("#/{$load_more_slug}/([0-9]+)/?#", $wp->request) ) {
+        echo '<meta name="robots" content="noindex, follow">' . "\n";
+    }
+});
 
 ?>

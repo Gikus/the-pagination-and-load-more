@@ -1,7 +1,7 @@
 === The Pagination and Load More ===
 
 Tested up to: 6.8
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 Contributors: Sevar
 Tags: load more button, ajax pagination
 License: GPLv2 or later
@@ -51,7 +51,7 @@ Demo site: [https://silverpheasant.ru/](https://silverpheasant.ru/)
 
 == Changelog: ==
 
-1.0.0 - initial uload
+1.0.0 - initial upload
  
 1.0.1 - translation update and minor fixes
 
@@ -68,4 +68,6 @@ Demo site: [https://silverpheasant.ru/](https://silverpheasant.ru/)
 1.1.3 - template usage bug fix
  
 1.1.4  - canonical for /more/ fix
+
+1.1.5 - noindex /more/ and dynamic container fix
  
