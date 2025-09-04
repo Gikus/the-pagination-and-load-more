@@ -92,7 +92,7 @@ function pagimore_render_settings_page() {
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php echo esc_html__('Url parameter for Load More', 'cubeb-pagination-and-load-more'); ?></th>
+                    <th scope="row"><?php echo esc_html__('Url path segment for Load More', 'cubeb-pagination-and-load-more'); ?></th>
                     <td>
                         <input type="text" name="pagimore_more_url_param" value="<?php echo esc_attr(get_option('pagimore_more_url_param', 'more')); ?>" style="width: 300px;">
                         <p class="description"><?php echo esc_html__('By default it is "more"', 'cubeb-pagination-and-load-more'); ?></p>

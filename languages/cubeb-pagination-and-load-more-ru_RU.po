@@ -3,9 +3,9 @@ msgstr ""
 "Project-Id-Version: Cubeab Pagination and Load More\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-28 03:33+0000\n"
-"PO-Revision-Date: 2025-08-28 03:51+0000\n"
+"PO-Revision-Date: 2025-09-04 11:06+0000\n"
 "Last-Translator: \n"
-"Language-Team: Russian\n"
+"Language-Team: Русский\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10 >= 2 && "
 "n%10<=4 &&(n%100<10||n%100 >= 20)? 1 : 2);\n"
@@ -74,10 +74,6 @@ msgstr ""
 #: includes/admin-settings.php:52
 msgid "CSS selector for the loop container to paginate."
 msgstr "CSS-селектор для контейнера цикла для пагинации."
-
-#. Name of the plugin
-msgid "Cubeab Pagination and Load More"
-msgstr ""
 
 #: includes/admin-settings.php:161
 msgid "Disable Default Styles"
@@ -181,6 +177,10 @@ msgstr ""
 msgid "Show the \"Load More\" button."
 msgstr "Показать кнопку «Загрузить еще»."
 
+#. Name of the plugin
+msgid "The Pagination and Load More"
+msgstr ""
+
 #: includes/admin-settings.php:95
-msgid "Url parameter for Load More"
-msgstr "Параметр URL для «Загрузить еще»"
+msgid "Url path segment for Load More"
+msgstr "URL сегмент для «Загрузить Еще»"

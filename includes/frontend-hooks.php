@@ -933,5 +933,12 @@ if (preg_match('#/' . preg_quote($post_tag_base, '#') . '/([^/]+)/page/([0-9]+)/
     }
 } 
 
- 
+ add_filter( 'redirect_canonical', function( $redirect_url, $requested_url ) {
+    $more_param = esc_attr(get_option('pagimore_more_url_param', 'more'));
+    if ( strpos( $requested_url, $more_param ) !== false ) {
+        return false; // skip canonical redirect for /more/ links
+    }
+    return $redirect_url;
+}, 10, 2 );
+
 ?>
