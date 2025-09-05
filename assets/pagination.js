@@ -4,10 +4,6 @@ jQuery(document).ready(function ($) {
     pagimore_ajax_data.pagimore_more_url_param || "more"
   );
 
-  let notFoundSlug = String(
-    pagimore_ajax_data.pagimore_404_page || "/notfound-404/"
-  );
-  console.log("Not found", notFoundSlug);
   // escape a string for use in RegExp constructor
   function escapeRegExp(str) {
     return String(str).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -190,17 +186,7 @@ jQuery(document).ready(function ($) {
           success: function (response) {
             $(".page-loading").removeClass("loading");
             $(".page-loading").remove();
-            console.log("loadPosts2 tag", postTag);
 
-            console.log("loadPosts2 more", postTag);
-            if (!response.html || response.html.trim() === "") {
-              // Only try to reload page 1 if not already on page 1
-              if (page !== 1) {
-                window.location.href = `${notFoundSlug}`;
-
-                return; // exit callback to stop further processing
-              }
-            }
             if (response.html) {
               if (append) {
                 $("." + pagimore_ajax_data.query_selector).append(
@@ -374,16 +360,6 @@ jQuery(document).ready(function ($) {
         $(".page-loading").removeClass("loading");
         $(".page-loading").remove();
         console.log("loadPosts", postTag);
-        // If response has no posts
-
-        if (!response.html || response.html.trim() === "") {
-          // Only try to reload page 1 if not already on page 1
-          if (page !== 1) {
-            window.location.href = `${notFoundSlug}`;
-
-            return; // exit callback to stop further processing
-          }
-        }
 
         if (response.html) {
           if (!append) {

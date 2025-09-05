@@ -46,7 +46,7 @@ function pagimore_render_settings_page() {
             ?>
             <table class="form-table">
                 <tr valign="top">
-                    <th scope="row"><?php echo esc_html__('Query Selector (CSS)', 'cubeb-pagination-and-load-more'); ?></th>
+                    <th scope="row"><?php echo esc_html__('Query Selector (CSS class)', 'cubeb-pagination-and-load-more'); ?></th>
                     <td>
                         <input type="text" name="pagimore_query_selector" value="<?php echo esc_attr(get_option('pagimore_query_selector', 'post-list')); ?>" style="width: 300px;">
                         <p class="description"><?php echo esc_html__('CSS selector for the loop container to paginate.', 'cubeb-pagination-and-load-more'); ?></p>
@@ -177,13 +177,7 @@ function pagimore_render_settings_page() {
         <p class="description"><?php echo esc_html__('Check this if you need pagination without URL change', 'cubeb-pagination-and-load-more'); ?></p>
     </td>
 </tr>
-<tr valign="top">
-                    <th scope="row"><?php echo esc_html__('Not Found slug', 'cubeb-pagination-and-load-more'); ?></th>
-                    <td>
-                        <input type="text" name="pagimore_404_page" value="<?php echo esc_attr(get_option('pagimore_404_page', '/notfound-404/')); ?>" style="width: 300px;">
-                        <p class="description"><?php echo esc_html__('Place here custom 404 Not Found template page slug with slashes.', 'cubeb-pagination-and-load-more'); ?></p>
-                    </td>
-                </tr>
+ 
             </table>
             <?php submit_button(); ?>
         </form>
@@ -196,7 +190,7 @@ add_action('admin_init', function() {
     register_setting('pagimore_settings_group', 'pagimore_query_selector', ['default' => 'post-list', 
             'sanitize_callback' => function ($value) {
                   $oldval = trim($value);
-                  $value = ltrim($oldval, '.'); // removes leading dot if exists
+                  $value = ltrim($oldval, '.#'); // removes leading dot or hash if exists
                 return $value === '' ? 'post-list' : $value;
             }
         ]);
@@ -329,12 +323,5 @@ return sanitize_text_field($value);
             }
         ]);
          
-        register_setting('pagimore_settings_group', 'pagimore_404_page',  [
-        'default'           => '/notfound-404/',
-        'sanitize_callback' => function ($value) {
-            $value = trim(sanitize_text_field($value));
-            return $value === '' ? '/notfound-404/' : $value;
-        },
-    ]);
        
 });

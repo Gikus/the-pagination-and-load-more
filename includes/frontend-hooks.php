@@ -249,7 +249,27 @@ $templates[] = "archive.php";  // last fallback
             'index.php'
     );
 
-            } else {
+            } elseif ( is_404() ) {
+
+    // Scan the theme directory for custom 404-like templates
+    $theme_dir = get_stylesheet_directory();
+    $theme_templates404 = scandir( $theme_dir );
+
+    // Match files ending with -page404.php or -404.php
+    $custom_templates404 = preg_grep( '/-(page404|404)\.php$/', $theme_templates404 );
+
+    // Build template priority
+    $templates = array_merge(
+        $custom_templates404 ? $custom_templates404 : [],
+        [
+            '404.php',
+            'notfound.php',
+            'index.php',
+        ]
+    );
+ 
+     
+} else {
             // Custom templates in the theme
     $theme_templates = scandir( get_stylesheet_directory() );
 
@@ -265,13 +285,13 @@ $templates[] = "archive.php";  // last fallback
         ]
     );
 
+
+}
     // Locate the first existing template
     $found_template = locate_template( $templates );
     if ( $found_template ) {
         return $found_template;
     }
-}
-
 // Fallback
 return $template;
 }
@@ -428,7 +448,7 @@ if ($ports) {
 
    $sclass = esc_attr(get_option('pagimore_query_selector', 'post-list'));
 
-    $qselect = ltrim($sclass, '.'); // removes leading dot if exists
+    $qselect = ltrim($sclass, '.#'); // removes leading dot or hash if exists
  
 // create query for template rendering
 $blog_posts = new WP_Query($args);
@@ -581,7 +601,6 @@ $product_category_base = trim($product_category_base, '/');
             'zapisi_tag' => $current_tag_slug,
             'cat_base' => $category_base,
             'woo_cat_base' => $product_category_base,
-            'pagimore_404_page' => esc_attr(get_option('pagimore_404_page', '/notfound-404/')),
             'remove_pages' => (bool) get_option('pagimore_remove_pages', 0),
             'query_selector' => esc_attr(get_option('pagimore_query_selector', 'post-list')),
         ]);
