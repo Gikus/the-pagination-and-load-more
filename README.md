@@ -34,5 +34,7 @@ for post tags: `tag-{$post_tag}.php`, `tag.php`, `archive.php`, `index.php`.
 
 For woocommerce tags: `product-tag-{$tag->slug}.php`, `product-tag-{$tag->term_id}.php`, `taxonomy-product_tag`, `product-tag.php`, `archive-product.php`, `archive.php`.
 
+For not found 404 page: files that end on `*-page404.php`, `*-404.php` or such full names as: `404.php`, `notfound.php`.
+
 Demo site: [https://silverpheasant.ru/](https://silverpheasant.ru/)
 
