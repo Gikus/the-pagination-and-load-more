@@ -1,14 +1,14 @@
 === The Pagination and Load More ===
 
 Tested up to: 6.8
-Stable tag: 1.1.6
+Stable tag: 1.1.7
 Contributors: Sevar
 Tags: load more button, ajax pagination
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Live Preview: https://playground.wordpress.net/?blueprint-url=https://plugins.svn.wordpress.org/cubeb-pagination-and-load-more/assets/blueprint.json
 
-The lightweight solution The Pagination and Load More adds AJAX pagination and Load More functionality working in sync for any post type.
+The lightweight solution The Pagination and Load More adds AJAX pagination and Load More functionality that work in sync for any post type.
 
 == Installation ==
 
@@ -77,4 +77,6 @@ Demo site: [https://silverpheasant.ru/](https://silverpheasant.ru/)
 1.1.5 - noindex /more/ and dynamic container fix
 
 1.1.6 - not found 404 fix and other minor fixes
+
+1.1.7 - small fix
  

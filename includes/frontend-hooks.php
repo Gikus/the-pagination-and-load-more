@@ -197,7 +197,7 @@ $templates[] = "archive.php";  // last fallback
     if ( ! empty( $tag->term_id ) ) {
         $templates[] = "product-tag-{$tag->term_id}.php"; // product-tag-34.php
     }
-    $templates[] = "taxonomy-product_tag";
+    $templates[] = "taxonomy-product_tag.php";
     $templates[] = "product-tag.php"; // generic product tag fallback
     $templates[] = "archive-product.php"; // WooCommerce archive fallback
     $templates[] = "archive.php"; // final fallback
