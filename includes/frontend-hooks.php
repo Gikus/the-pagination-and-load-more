@@ -370,6 +370,8 @@ $paged = get_query_var('paged') ? get_query_var('paged') : 1;
     'post_type'      => $post_type,
     'posts_per_page' => (int) get_option('pagimore_post_per_page', 6),
     'paged'          => $paged,
+    'ignore_sticky_posts' => true,
+     'post_status'         => 'publish',
      'orderby' => 'post_date', // More specific than just 'date'
     'order' => 'DESC',
     
