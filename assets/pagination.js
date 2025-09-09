@@ -62,22 +62,9 @@ jQuery(document).ready(function ($) {
 
   let postTag = pagimore_ajax_data.zapisi_tag || null;
 
-  const pregex = new RegExp(`/${catBase}/([^/]+)(?:/|$)`);
-  const postslugMatch = window.location.pathname.match(pregex);
+  let brandSlug = pagimore_ajax_data.woo_brand_slug || null;
 
-  if (postslugMatch) {
-    postCatSlug = postslugMatch[1];
-  }
-  console.log("Cat slug", postCatSlug);
   let currentSlug = pagimore_ajax_data.product_cat || null;
-  if (!currentSlug) {
-    const regex = new RegExp(`/${wooCatBase}/([^/]+)/`);
-    const slugMatch = window.location.pathname.match(regex);
-
-    if (slugMatch) {
-      currentSlug = slugMatch[1]; // real category slug
-    }
-  }
 
   // Norma slash
 
@@ -175,6 +162,7 @@ jQuery(document).ready(function ($) {
             post_cat: postCatSlug,
             category_base: catBase,
             woo_category_base: wooCatBase,
+            brand_slug: brandSlug,
             security: pagimore_ajax_data.nonce,
           },
           beforeSend: function () {
@@ -348,6 +336,7 @@ jQuery(document).ready(function ($) {
         post_cat: postCatSlug,
         category_base: catBase,
         woo_category_base: wooCatBase,
+        brand_slug: brandSlug,
         security: pagimore_ajax_data.nonce,
       },
       beforeSend: function () {

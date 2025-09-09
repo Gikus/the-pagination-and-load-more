@@ -96,7 +96,32 @@ $post_tag_base = get_option('tag_base', 'tag'); // default WP post tag base
         'top'
     );
  
+// Get the product_brand taxonomy object
+$taxonomy = get_taxonomy('product_brand');
 
+if ( $taxonomy && ! empty($taxonomy->rewrite['slug']) ) {
+    $brand_base = $taxonomy->rewrite['slug']; // e.g. 'product-brand'
+} else {
+    $brand_base = 'product-brand'; // fallback default
+}
+
+// Clean it up
+$brand_base = trim($brand_base, '/');
+
+
+// Match any number of brand/subbrand segments
+add_rewrite_rule(
+    '^' . preg_quote($brand_base, '#') . '/(.+)/page/([0-9]+)/?$',
+    'index.php?product_brand=$matches[1]&paged=$matches[2]',
+    'top'
+);
+
+// Match with pagination + "more" param
+add_rewrite_rule(
+    '^' . preg_quote($brand_base, '#') . '/(.+)/page/([0-9]+)/' . preg_quote($more_param, '#') . '/([0-9]+)/?$',
+    'index.php?product_brand=$matches[1]&paged=$matches[2]&' . $more_param . '=$matches[3]',
+    'top'
+);
     }
     
     // Flush rules on activation
@@ -191,15 +216,24 @@ $templates[] = "archive.php";  // last fallback
     $tag = get_queried_object();
 
     if ( ! empty( $tag->slug ) ) {
-        $templates[] = "product-tag-{$tag->slug}.php"; // product-tag-shoes.php
-    }
+    $templates[] = "product-tag-{$tag->slug}.php"; 
+    $templates[] = "woocommerce/product-tag-{$tag->slug}.php"; 
+}
 
-    if ( ! empty( $tag->term_id ) ) {
-        $templates[] = "product-tag-{$tag->term_id}.php"; // product-tag-34.php
-    }
-    $templates[] = "taxonomy-product_tag.php";
-    $templates[] = "product-tag.php"; // generic product tag fallback
-    $templates[] = "archive-product.php"; // WooCommerce archive fallback
+if ( ! empty( $tag->term_id ) ) {
+    $templates[] = "product-tag-{$tag->term_id}.php"; 
+    $templates[] = "woocommerce/product-tag-{$tag->term_id}.php"; 
+}
+
+$templates[] = "taxonomy-product_tag.php";
+$templates[] = "woocommerce/taxonomy-product_tag.php";
+
+$templates[] = "product-tag.php"; 
+$templates[] = "woocommerce/product-tag.php"; 
+
+$templates[] = "archive-product.php"; 
+$templates[] = "woocommerce/archive-product.php"; 
+
     $templates[] = "archive.php"; // final fallback
 } elseif (get_query_var('tag')) { 
 
@@ -222,26 +256,79 @@ $templates[] = "archive.php";  // last fallback
             ];
         }
              
-         } elseif ( isset( $post ) && $post->post_type === 'product' ) {
-        // Get product categories
-        $terms = wp_get_post_terms( $post->ID, 'product_cat' );
+         } elseif ( $cat_slug = get_query_var('product_cat') ) {
+    $term = get_term_by('slug', $cat_slug, 'product_cat');
 
-        if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
-            foreach ( $terms as $term ) {
-                // First try a specific category template
-                $templates = array(
-                    "single-product_cat-{$term->slug}.php",
-                    "single-product_cat-{$term->term_id}.php",
-                ); }  } else {
- $templates = array(
-            'single-product.php',
-            'single.php',
-            'singular.php',
-            'index.php'
-        ); 
-                }
-            
-           } elseif ( is_single() ) {  
+    if ( $term && ! is_wp_error($term) ) {
+        global $wp_query;
+
+        // Treat it as a taxonomy archive
+        $wp_query->is_tax     = true;
+        $wp_query->is_archive = true;
+        $wp_query->queried_object = $term;
+
+        // Proper WooCommerce taxonomy templates
+        $templates = array(
+            "taxonomy-product_cat-{$term->slug}.php",   // category by slug
+            "taxonomy-product_cat-{$term->term_id}.php", // category by ID
+            "taxonomy-product_cat.php",                 // generic product_cat
+            "archive-product.php",  
+             "woocommerce/taxonomy-product_cat-{$term->slug}.php",   // category by slug
+            "woocommerce/taxonomy-product_cat-{$term->term_id}.php", // category by ID
+            "woocommerce/taxonomy-product_cat.php",                 // generic product_cat
+            "woocommerce/archive-product.php",                     // WooCommerce archive
+            "archive.php",
+            "index.php",
+        );
+    }
+} elseif ( $brand_slug = get_query_var('product_brand') ) {
+
+    $term = get_term_by('slug', $brand_slug, 'product_brand');
+    if ( $term && ! is_wp_error($term) ) {
+        global $wp_query;
+
+        // Treat it as a taxonomy archive
+        $wp_query->is_tax     = true;
+        $wp_query->is_archive = true;
+        $wp_query->queried_object = $term;
+
+        // Choose templates
+        $templates = [
+            "taxonomy-product_brand-{$brand_slug}.php",
+            "taxonomy-product_brand-{$term->term_id}.php",
+            "taxonomy-product_brand.php",
+            "archive-product.php",
+            "woocommerce/taxonomy-product_brand-{$brand_slug}.php",
+            "woocommerce/taxonomy-product_brand-{$term->term_id}.php",
+            "woocommerce/taxonomy-product_brand.php",
+            "woocommerce/archive-product.php",
+            "archive.php",
+            "index.php",
+        ];
+
+         
+    }
+} elseif ( is_singular( 'product' ) ) {  
+    
+
+     $found_template = locate_template($templates);
+
+    if ( ! $found_template && class_exists('WooCommerce') ) {
+        // Fallback to WooCommerce plugin templates
+        $templates = WC()->plugin_path() . '/templates/single-product.php';
+    } else {
+         $templates = array(
+        'woocommerce/single-product.php',        // WooCommerce single product template in theme/woocommerce/
+        'single-product.php',                     // root of theme fallback
+        'single.php',                             // WordPress fallback
+        'singular.php',                           // generic singular fallback
+        'index.php'                               // ultimate fallback
+    );
+    }
+
+     
+
+} elseif ( is_single() ) {  
  $templates = array(
         'single-post.php',
             'single.php',
@@ -301,16 +388,17 @@ function force_template_for_woo_ports() {
     $more_param   = esc_attr( get_option('pagimore_more_url_param', 'more') );
     $ports        = get_query_var( $more_param );
     $product_cat  = get_query_var( 'product_cat' );
-    $product_tag  = get_query_var( 'product_tag' ); // ✅ add this
+    $product_tag  = get_query_var( 'product_tag' );
+    $product_brand = get_query_var( 'product_brand' );  
 
-    if ( $ports && ( $product_cat || $product_tag ) ) {
+    if ( $ports && ( $product_cat || $product_tag || $product_brand ) ) {
         global $wp_query;
 
         // Clear 404 status
         $wp_query->is_404 = false;
         status_header(200);
 
-        // Set correct query flags for WooCommerce taxonomy archives
+        // Mark as WooCommerce taxonomy archive
         $wp_query->is_tax              = true;
         $wp_query->is_archive          = true;
         $wp_query->is_product_taxonomy = true;
@@ -320,6 +408,8 @@ function force_template_for_woo_ports() {
             $wp_query->queried_object = get_term_by( 'slug', $product_cat, 'product_cat' );
         } elseif ( $product_tag ) {
             $wp_query->queried_object = get_term_by( 'slug', $product_tag, 'product_tag' );
+        } elseif ( $product_brand ) {
+            $wp_query->queried_object = get_term_by( 'slug', $product_brand, 'product_brand' );
         }
     }
 }
@@ -448,6 +538,12 @@ if ($ports) {
 
  } 
 
+ if(get_query_var('product_brand')) {
+    $br_slug = get_query_var('product_brand');
+   $args['product_brand'] = $br_slug; 
+
+ } 
+
    $sclass = esc_attr(get_option('pagimore_query_selector', 'post-list'));
 
     $qselect = ltrim($sclass, '.#'); // removes leading dot or hash if exists
@@ -550,7 +646,14 @@ if (function_exists('is_tag') && is_tag()) {
     }
 }
 
-
+$current_brand_slug = '';
+// Check WooCommerce product brand
+if ( function_exists( 'is_tax' ) && is_tax( 'product_brand' ) ) {
+    $current_brand = get_queried_object(); // WP_Term object
+    if ( $current_brand && ! is_wp_error( $current_brand ) ) {
+        $current_brand_slug = $current_brand->slug;
+    }
+}
 
 // Get the category base slug (returns 'category' by default)
 $category_base = get_option('category_base');
@@ -603,6 +706,7 @@ $product_category_base = trim($product_category_base, '/');
             'zapisi_tag' => $current_tag_slug,
             'cat_base' => $category_base,
             'woo_cat_base' => $product_category_base,
+            'woo_brand_slug' =>  $current_brand_slug,
             'remove_pages' => (bool) get_option('pagimore_remove_pages', 0),
             'query_selector' => esc_attr(get_option('pagimore_query_selector', 'post-list')),
         ]);
@@ -679,7 +783,9 @@ if ( $tagTag ) {
 }
 
 
-
+$current_brand = sanitize_text_field(
+    wp_unslash( $_POST['brand_slug'] ?? $_GET['brand_slug'] ?? '' )
+);
  
     // Only reset accumulated_pages if not appending (replace)
     $append = isset( $_POST['append'] ) ? sanitize_text_field( wp_unslash( $_POST['append'] ) ) : '';
@@ -711,30 +817,27 @@ $args = [
 ];
 
 } else if ( ! empty( $postcatslug ) ) {
-    
-    // Get the term object
-    $term = get_term_by('slug', $postcatslug, 'category');
+    // Get the term object from queried slug
+    $term = get_term_by( 'slug', $postcatslug, 'category' );
 
     if ( $term && ! is_wp_error( $term ) ) {
-        // Get descendant category IDs (children and deeper)
-        $child_cat_ids = get_term_children( $term->term_id, 'category' );
-        
-        // Include the current category ID itself
-        $all_cat_ids = array_merge( array( $term->term_id ), $child_cat_ids );
-
-        // Only proceed if there are categories to query
-        if ( ! empty( $all_cat_ids ) ) {
-            $args = [
-                'post_type'           => $post_type,
-                'posts_per_page'      => $per_page,
-                'ignore_sticky_posts' => true,
-                'paged'               => $paged,
-                'post_status'         => 'publish',
-                'category__in'        => $all_cat_ids, // current + children
-                'orderby'             => 'post_date',
-                'order'               => 'DESC',
-            ];
-        }
+        $args = [
+            'post_type'           => $post_type,
+            'posts_per_page'      => $per_page,
+            'ignore_sticky_posts' => true,
+            'paged'               => $paged,
+            'post_status'         => 'publish',
+            'tax_query'           => [
+                [
+                    'taxonomy'         => 'category',
+                    'field'            => 'term_id',
+                    'terms'            => $term->term_id,
+                    'include_children' => true, 
+                ],
+            ],
+            'orderby'             => 'post_date',
+            'order'               => 'DESC',
+        ];
     }
 } else if ($current_tag) {
    
@@ -767,6 +870,24 @@ $args = [
         'post_status'         => 'publish',
         'orderby'             => 'post_date',
         'order'               => 'DESC',
+    ];
+} elseif ( $current_brand ) {
+
+    $args = [
+        'post_type'           => $post_type,
+        'posts_per_page'      => $per_page,
+        'ignore_sticky_posts' => true,
+        'paged'               => $paged, // use $paged directly
+        'post_status'         => 'publish',
+        'orderby'             => 'post_date', // More specific than just 'date'
+        'order'               => 'DESC',
+        'tax_query'           => [
+            [
+                'taxonomy' => 'product_brand',
+                'field'    => 'slug',
+                'terms'    => [ $current_brand ],
+            ],
+        ],
     ];
 } else {
    
@@ -954,6 +1075,34 @@ if (preg_match('#/' . preg_quote($post_tag_base, '#') . '/([^/]+)/page/([0-9]+)/
     }
 }
 
+// Get the product_brand taxonomy object
+$btaxonomy = get_taxonomy('product_brand');
+
+if ( $btaxonomy && ! empty($btaxonomy->rewrite['slug']) ) {
+    $brand_base = $btaxonomy->rewrite['slug']; // e.g. 'product-brand'
+} else {
+    $brand_base = 'product-brand'; // fallback default
+}
+
+// Clean it up
+$brand_base = trim($brand_base, '/');
+
+// Match URLs like /brand/nike/page/3/
+if (preg_match('#/' . preg_quote($brand_base, '#') . '/([^/]+)/page/([0-9]+)/?#', $request, $matches)) {
+    $term = get_term_by('slug', $matches[1], 'product_brand');
+    if ($term && !is_wp_error($term)) {
+        global $wp_query;
+
+        $wp_query->is_404 = false;
+        $wp_query->is_archive = true;
+        $wp_query->is_tax = true; // explicitly mark taxonomy archive
+        $wp_query->queried_object = $term;
+
+        // Inject query vars
+        $wp_query->query_vars['product_brand'] = $matches[1];
+        $wp_query->query_vars['paged'] = (int) $matches[2];
+    }
+}
     }
 } 
 
