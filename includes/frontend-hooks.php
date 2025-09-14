@@ -30,30 +30,37 @@ class CubebCustomUrlParameters {
         $more_param = esc_attr(get_option('pagimore_more_url_param', 'more'));
         // Basic patterns
         add_rewrite_rule(
-            '^' .$more_param . '/([0-9]+)/?$',
-            'index.php?' .$more_param . '=$matches[1]',
+            '^' . $more_param . '/([0-9]+)/?$',
+            'index.php?' . $more_param . '=$matches[1]',
             'top'
         );
         
         // With pagination
         add_rewrite_rule(
-            '^page/([0-9]+)/' .$more_param . '/([0-9]+)/?$',
-            'index.php?paged=$matches[1]&' .$more_param . '=$matches[2]',
+            '^page/([0-9]+)/' . $more_param . '/([0-9]+)/?$',
+            'index.php?paged=$matches[1]&' . $more_param . '=$matches[2]',
             'top'
         );
-        // Get the category base slug (returns 'category' by default)
-$categ_base = get_option('category_base');
 
-// If empty, WordPress uses 'category' as default
-if (empty($categ_base)) {
-    $categ_base = 'category';
-}
-       // With categories (including subcategories)
-add_rewrite_rule(
-    '^' . $categ_base . '/(.+)/' . $more_param . '/([0-9]+)/?$',
-    'index.php?category_name=$matches[1]&' . $more_param . '=$matches[2]',
-    'top'
-);
+    // -------------------------
+    // 1. Category with /more/
+    // Example: /category/shoes/more/2/
+    // -------------------------
+    add_rewrite_rule(
+        '^' . $categ_base . '/(.+)/' . $more_param . '/([0-9]+)/?$',
+        'index.php?category_name=$matches[1]&' . $more_param . '=$matches[2]',
+        'top'
+    );
+
+    // -------------------------
+    // 2. Category with pagination + /more/
+    // Example: /category/shoes/page/2/more/3/
+    // -------------------------
+    add_rewrite_rule(
+        '^' . $categ_base . '/(.+)/page/([0-9]+)/' . $more_param . '/([0-9]+)/?$',
+        'index.php?category_name=$matches[1]&paged=$matches[2]&' . $more_param . '=$matches[3]',
+        'top'
+    );
 
         // Get WooCommerce permalinks settings
 $wooperma = get_option('woocommerce_permalinks');
