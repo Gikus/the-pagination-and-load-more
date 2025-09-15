@@ -34,6 +34,7 @@ class CubebCustomUrlParameters {
             'index.php?' . $more_param . '=$matches[1]',
             'top'
         );
+
         
         // With pagination
         add_rewrite_rule(
@@ -42,25 +43,7 @@ class CubebCustomUrlParameters {
             'top'
         );
 
-    // -------------------------
-    // 1. Category with /more/
-    // Example: /category/shoes/more/2/
-    // -------------------------
-    add_rewrite_rule(
-        '^' . $categ_base . '/(.+)/' . $more_param . '/([0-9]+)/?$',
-        'index.php?category_name=$matches[1]&' . $more_param . '=$matches[2]',
-        'top'
-    );
-
-    // -------------------------
-    // 2. Category with pagination + /more/
-    // Example: /category/shoes/page/2/more/3/
-    // -------------------------
-    add_rewrite_rule(
-        '^' . $categ_base . '/(.+)/page/([0-9]+)/' . $more_param . '/([0-9]+)/?$',
-        'index.php?category_name=$matches[1]&paged=$matches[2]&' . $more_param . '=$matches[3]',
-        'top'
-    );
+     
 
         // Get WooCommerce permalinks settings
 $wooperma = get_option('woocommerce_permalinks');
