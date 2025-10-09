@@ -348,6 +348,14 @@ $templates[] = "woocommerce/archive-product.php";
      
 } else {
             // Custom templates in the theme
+    // Get the template assigned in Page Attributes
+    $assigned_template = get_page_template_slug( $post->ID ); 
+
+    if ( $assigned_template && file_exists( get_stylesheet_directory() . '/' . $assigned_template ) ) {
+        // Use the assigned template
+        return get_stylesheet_directory() . '/' . $assigned_template;
+    } else {
+             // Custom templates in the theme
     $theme_templates = scandir( get_stylesheet_directory() );
 
     // Filter templates ending with -page.php, -template.php, -home.php, -post-type.php, -posts.php
@@ -361,6 +369,7 @@ $templates[] = "woocommerce/archive-product.php";
             'index.php'
         ]
     );
+    }
 
 
 }
