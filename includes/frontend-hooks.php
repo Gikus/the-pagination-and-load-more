@@ -28,22 +28,7 @@ class CubebCustomUrlParameters {
     private function add_rewrite_rules() {
 
         $more_param = esc_attr(get_option('pagimore_more_url_param', 'more'));
-        // Basic patterns
-        add_rewrite_rule(
-            '^' . $more_param . '/([0-9]+)/?$',
-            'index.php?' . $more_param . '=$matches[1]',
-            'top'
-        );
-
-        
-        // With pagination
-        add_rewrite_rule(
-            '^page/([0-9]+)/' . $more_param . '/([0-9]+)/?$',
-            'index.php?paged=$matches[1]&' . $more_param . '=$matches[2]',
-            'top'
-        );
-
-     
+    
 
         // Get WooCommerce permalinks settings
 $wooperma = get_option('woocommerce_permalinks');
@@ -112,6 +97,19 @@ add_rewrite_rule(
     'index.php?product_brand=$matches[1]&paged=$matches[2]&' . $more_param . '=$matches[3]',
     'top'
 );
+
+// Match any page slug + pagination + "more" param
+    add_rewrite_rule(
+        '^([^/]+)/page/([0-9]+)/' . preg_quote($more_param, '#') . '/([0-9]+)/?$',
+        'index.php?pagename=$matches[1]&paged=$matches[2]&' . $more_param . '=$matches[3]',
+        'top'
+    );
+    // Front page pagination + "more" param: /page/3/more/2/
+add_rewrite_rule(
+    '^page/([0-9]+)/' . preg_quote($more_param, '#') . '/([0-9]+)/?$',
+    'index.php?pagename=' . get_option('page_on_front') . '&paged=$matches[1]&' . $more_param . '=$matches[2]',
+    'top'
+);
     }
     
     // Flush rules on activation
@@ -174,160 +172,23 @@ function handle_ports_parameter_templates() {
     }
 }
 
-// Force the correct template
+  // Force the correct template
 add_filter('template_include', 'custom_ports_template', 99);
 function custom_ports_template($template) {
+      global $post, $wp_query;
 
-     global $wp_query;
-     global $post;
-
-     
-    $more_param = esc_attr(get_option('pagimore_more_url_param', 'more'));
+      $more_param = esc_attr(get_option('pagimore_more_url_param', 'more'));
     $ports = get_query_var($more_param);
-    
-        // Try to find the most appropriate template
-        $templates = array();
-        
-        if (is_category()) {
-            $category = get_queried_object();
-            $templates = array();
+      
+   // Get the template assigned in Page Attributes
+    $assigned_template = get_page_template_slug( $post->ID ); 
 
-if ( ! empty( $category->slug ) ) {
-    $templates[] = "category-{$category->slug}.php"; // category-sofas.php
-}
-
-if ( ! empty( $category->term_id ) ) {
-    $templates[] = "category-{$category->term_id}.php"; // category-12.php
-}
-
-$templates[] = "category.php"; // generic fallback
-$templates[] = "archive.php";  // last fallback
-        } else if ( is_tax( 'product_tag' ) ) {
-    $tag = get_queried_object();
-
-    if ( ! empty( $tag->slug ) ) {
-    $templates[] = "product-tag-{$tag->slug}.php"; 
-    $templates[] = "woocommerce/product-tag-{$tag->slug}.php"; 
-}
-
-if ( ! empty( $tag->term_id ) ) {
-    $templates[] = "product-tag-{$tag->term_id}.php"; 
-    $templates[] = "woocommerce/product-tag-{$tag->term_id}.php"; 
-}
-
-$templates[] = "taxonomy-product_tag.php";
-$templates[] = "woocommerce/taxonomy-product_tag.php";
-
-$templates[] = "product-tag.php"; 
-$templates[] = "woocommerce/product-tag.php"; 
-
-$templates[] = "archive-product.php"; 
-$templates[] = "woocommerce/archive-product.php"; 
-
-    $templates[] = "archive.php"; // final fallback
-} elseif (get_query_var('tag')) { 
-
-      $post_tag = get_query_var('tag');
-
-     
-        $term = get_term_by('slug', $post_tag, 'post_tag');
-        if ($term && !is_wp_error($term)) {
-            // Force WP to treat it as a tag archive
-            $wp_query->is_tag     = true;
-            $wp_query->is_archive = true;
-            $wp_query->queried_object = $term;
-
-            // Choose templates
-            $templates = [
-                "tag-{$post_tag}.php",
-                "tag.php",
-                "archive.php",
-                "index.php",
-            ];
-        }
-             
-         } elseif ( $cat_slug = get_query_var('product_cat') ) {
-    $term = get_term_by('slug', $cat_slug, 'product_cat');
-
-    if ( $term && ! is_wp_error($term) ) {
-        global $wp_query;
-
-        // Treat it as a taxonomy archive
-        $wp_query->is_tax     = true;
-        $wp_query->is_archive = true;
-        $wp_query->queried_object = $term;
-
-        // Proper WooCommerce taxonomy templates
-        $templates = array(
-            "taxonomy-product_cat-{$term->slug}.php",   // category by slug
-            "taxonomy-product_cat-{$term->term_id}.php", // category by ID
-            "taxonomy-product_cat.php",                 // generic product_cat
-            "archive-product.php",  
-             "woocommerce/taxonomy-product_cat-{$term->slug}.php",   // category by slug
-            "woocommerce/taxonomy-product_cat-{$term->term_id}.php", // category by ID
-            "woocommerce/taxonomy-product_cat.php",                 // generic product_cat
-            "woocommerce/archive-product.php",                     // WooCommerce archive
-            "archive.php",
-            "index.php",
-        );
-    }
-} elseif ( $brand_slug = get_query_var('product_brand') ) {
-
-    $term = get_term_by('slug', $brand_slug, 'product_brand');
-    if ( $term && ! is_wp_error($term) ) {
-        global $wp_query;
-
-        // Treat it as a taxonomy archive
-        $wp_query->is_tax     = true;
-        $wp_query->is_archive = true;
-        $wp_query->queried_object = $term;
-
-        // Choose templates
-        $templates = [
-            "taxonomy-product_brand-{$brand_slug}.php",
-            "taxonomy-product_brand-{$term->term_id}.php",
-            "taxonomy-product_brand.php",
-            "archive-product.php",
-            "woocommerce/taxonomy-product_brand-{$brand_slug}.php",
-            "woocommerce/taxonomy-product_brand-{$term->term_id}.php",
-            "woocommerce/taxonomy-product_brand.php",
-            "woocommerce/archive-product.php",
-            "archive.php",
-            "index.php",
-        ];
-
-         
-    }
-} elseif ( is_singular( 'product' ) ) {  
-    
-
-     $found_template = locate_template($templates);
-
-    if ( ! $found_template && class_exists('WooCommerce') ) {
-        // Fallback to WooCommerce plugin templates
-        $templates = WC()->plugin_path() . '/templates/single-product.php';
-    } else {
-         $templates = array(
-        'woocommerce/single-product.php',        // WooCommerce single product template in theme/woocommerce/
-        'single-product.php',                     // root of theme fallback
-        'single.php',                             // WordPress fallback
-        'singular.php',                           // generic singular fallback
-        'index.php'                               // ultimate fallback
-    );
-    }
-
-     
-
-} elseif ( is_single() ) {  
- $templates = array(
-        'single-post.php',
-            'single.php',
-            'page.php',
-            'index.php'
-    );
-
-            } elseif ( is_404() ) {
-
+    if ( $assigned_template && file_exists( get_stylesheet_directory() . '/' . $assigned_template ) ) {
+        // Use the assigned template
+         $templates = get_stylesheet_directory() . '/' . $assigned_template;
+          
+    } elseif ( is_404() || $wp_query->is_404 ) {
+ 
     // Scan the theme directory for custom 404-like templates
     $theme_dir = get_stylesheet_directory();
     $theme_templates404 = scandir( $theme_dir );
@@ -346,33 +207,15 @@ $templates[] = "woocommerce/archive-product.php";
     );
  
      
-} else {
-            // Custom templates in the theme
-    // Get the template assigned in Page Attributes
-    $assigned_template = get_page_template_slug( $post->ID ); 
-
-    if ( $assigned_template && file_exists( get_stylesheet_directory() . '/' . $assigned_template ) ) {
-        // Use the assigned template
-        return get_stylesheet_directory() . '/' . $assigned_template;
-    } else {
-             // Custom templates in the theme
+} elseif ($ports && !$wp_query->is_404 && !is_404() && !is_single() && !is_singular('product') && !is_category() && !get_query_var('product_cat') && !get_query_var('category_name') && !get_query_var('product_tag') && !get_query_var('product_brand') && !get_query_var('tag')) {
+    // Custom templates in the theme
     $theme_templates = scandir( get_stylesheet_directory() );
 
     // Filter templates ending with -page.php, -template.php, -home.php, -post-type.php, -posts.php
-    $custom_templates = preg_grep( '/-(page|template|home|post-type|posts)\.php$/', $theme_templates );
+    $templates = preg_grep( '/-(page|template|home|post-type|posts)\.php$/', $theme_templates );
+}    
+   
 
-    // Merge with safe fallbacks: first single post templates, then page/index
-    $templates = array_merge(
-        $custom_templates,
-        [
-            'page.php',
-            'index.php'
-        ]
-    );
-    }
-
-
-}
     // Locate the first existing template
     $found_template = locate_template( $templates );
     if ( $found_template ) {
@@ -549,6 +392,39 @@ if ($ports) {
  
 // create query for template rendering
 $blog_posts = new WP_Query($args);
+
+if ( ! $blog_posts->have_posts() && !$ports) {
+         global $wp_query;
+        status_header(404);
+        $wp_query->set_404();
+        $wp_query->is_404 = true;
+         // Load the theme’s 404.php template directly
+   // 🔍 Scan theme directory for custom 404 templates
+    $theme_dir = get_stylesheet_directory();
+    $theme_templates404 = scandir( $theme_dir );
+
+    // Match files ending with -page404.php or -404.php
+    $custom_templates404 = preg_grep( '/-(page404|404)\.php$/', $theme_templates404 );
+
+    // Build priority list: custom matches first, then fallbacks
+    $templates = array_merge(
+        $custom_templates404 ? $custom_templates404 : [],
+        [
+            '404.php',
+            'notfound.php',
+            'index.php',
+        ]
+    );
+
+    // ✅ Try to locate the first existing template
+    $theme_404 = locate_template( $templates );
+
+    if ( $theme_404 ) {
+        include $theme_404;
+        exit;
+    }
+    }  
+
     ?>
 <section class="<?php echo esc_attr($qselect); ?>">
     <?php if ($blog_posts->have_posts()): while ($blog_posts->have_posts()): $blog_posts->the_post(); ?>
