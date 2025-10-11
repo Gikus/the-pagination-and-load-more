@@ -1,7 +1,7 @@
 === The Pagination and Load More ===
 
 Tested up to: 6.8
-Stable tag: 1.2.5
+Stable tag: 1.2.6
 Contributors: Sevar
 Tags: load more button, ajax pagination
 License: GPLv2 or later
@@ -49,8 +49,6 @@ For woocommerce tags:  `product-tag-{$tag->slug}.php`, `product-tag-{$tag->term_
 
 For product brands in `get_query_var('product_brand')`: `taxonomy-product_brand-{$brand_slug}.php`, `taxonomy-product_brand-{$term->term_id}.php`, `taxonomy-product_brand.php`, `archive-product.php`, `archive.php`, `index.php`
 
-For woocommerce `single-product.php` - if it doesn't find it in the theme root or  theme root/woocommerce/ folder then it looks to the woocommerce's plugin native folder. Then it looks for `single.php`, `singular.php`, `index.php`
-
 For not found 404 page: files that end on `*-page404.php`, `*-404.php` or such full names as: `404.php`, `notfound.php`. If you use some plugin to define your 404 slug then attach your 404 template mentioned above to a page and the slug of the page place into the plugin's settings.
 
 
@@ -80,3 +78,5 @@ Demo site: [https://evgenysudakov.ru/](https://evgenysudakov.ru/)
 1.2.4 - Template choice fix
 
 1.2.5 - Template choice fix ultimate
+
+1.2.6 - Shortcode inside page builder fix

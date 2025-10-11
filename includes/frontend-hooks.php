@@ -179,6 +179,74 @@ function custom_ports_template($template) {
 
       $more_param = esc_attr(get_option('pagimore_more_url_param', 'more'));
     $ports = get_query_var($more_param);
+
+    function is_gutenberg_page( $post = null ) {
+    $post = get_post( $post );
+    if ( ! $post ) {
+        return false;
+    }
+
+    // Check for block syntax in post content
+    if ( has_blocks( $post ) ) {
+        return true;
+    }
+
+    // Fallback manual check for very old WP versions
+    if ( strpos( $post->post_content, '<!-- wp:' ) !== false ) {
+        return true;
+    }
+
+    return false;
+}
+
+function is_elementor_page( $post_id = null ) {
+    $post_id = $post_id ?: get_the_ID();
+    if ( ! $post_id ) {
+        return false;
+    }
+
+    return (bool) get_post_meta( $post_id, '_elementor_edit_mode', true );
+}
+
+
+function is_wpbakery_page( $post_id = null ) {
+    $post_id = $post_id ?: get_the_ID();
+    if ( ! $post_id ) {
+        return false;
+    }
+
+    $status = get_post_meta( $post_id, '_wpb_vc_js_status', true );
+
+    if ( $status === 'true' ) {
+        return true;
+    }
+
+    $post = get_post( $post_id );
+    if ( $post && strpos( $post->post_content, '[vc_row' ) !== false ) {
+        return true;
+    }
+
+    return false;
+}
+
+ 
+ function detect_page_builder( $post_id = null ) {
+    $post_id = $post_id ?: get_the_ID();
+
+    if ( is_elementor_page( $post_id ) ) {
+        return 'elementor';
+    }
+    if ( is_wpbakery_page( $post_id ) ) {
+        return 'wpbakery';
+    }
+    if ( is_gutenberg_page( $post_id ) ) {
+        return 'gutenberg';
+    }
+
+    return 'classic';
+}
+
+$pbuilder = detect_page_builder();
       
    // Get the template assigned in Page Attributes
     $assigned_template = get_page_template_slug( $post->ID ); 
@@ -207,7 +275,7 @@ function custom_ports_template($template) {
     );
  
      
-} elseif ($ports && !$wp_query->is_404 && !is_404() && !is_single() && !is_singular('product') && !is_category() && !get_query_var('product_cat') && !get_query_var('category_name') && !get_query_var('product_tag') && !get_query_var('product_brand') && !get_query_var('tag')) {
+} elseif ( $pbuilder != 'gutenberg' && $pbuilder != 'elementor' && $pbuilder != 'wpbakery' && $ports && !$wp_query->is_404 && !is_404() && !is_single() && !is_singular('product') && !is_category() && !get_query_var('product_cat') && !get_query_var('category_name') && !get_query_var('product_tag') && !get_query_var('product_brand') && !get_query_var('tag')) {
     // Custom templates in the theme
     $theme_templates = scandir( get_stylesheet_directory() );
 
