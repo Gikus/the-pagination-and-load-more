@@ -24,7 +24,7 @@ The Pagination and Load More work reflects in the URL: if only the pagination is
 
 ## Template names you can use
 
-For post type: files that end on `*-page.php`, `*-template.php`, `*-home.php`, `*-post-type.php`,`*-posts.php`.
+For post type on the home front page: files that end on `*-page.php`, `*-template.php`, `*-home.php`, `*-post-type.php`,`*-posts.php`.
 
 For categories: `category-{$category->slug}.php`, `category-{$category->term_id}.php`, `category.php`, `archive.php`.
 
@@ -35,8 +35,6 @@ for post tags: `tag-{$post_tag}.php`, `tag.php`, `archive.php`, `index.php`.
 For woocommerce tags: `product-tag-{$tag->slug}.php`, `product-tag-{$tag->term_id}.php`, `taxonomy-product_tag`, `product-tag.php`, `archive-product.php`, `archive.php`.
 
 For product brands in `get_query_var('product_brand')`: `taxonomy-product_brand-{$brand_slug}.php`, `taxonomy-product_brand-{$term->term_id}.php`, `taxonomy-product_brand.php`, `archive-product.php`, `archive.php`, `index.php`
-
-For woocommerce `single-product.php` - if it doesn't find it in the theme root or  theme root/woocommerce/ folder then it looks to the woocommerce's plugin native folder. Then it looks for `single.php`, `singular.php`, `index.php`
 
 For not found 404 page: files that end on `*-page404.php`, `*-404.php` or such full names as: `404.php`, `notfound.php`. If you use some plugin to define your 404 slug then attach your 404 template mentioned above to a page and the slug of the page place into the plugin's settings.
 
