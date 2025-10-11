@@ -283,11 +283,15 @@ $pbuilder = detect_page_builder();
     $templates = preg_grep( '/-(page|template|home|post-type|posts)\.php$/', $theme_templates );
 }    
    
-
-    // Locate the first existing template
+if(!empty($templates)) {
+ // Locate the first existing template
     $found_template = locate_template( $templates );
+
+   
     if ( $found_template ) {
         return $found_template;
+    }
+
     }
 // Fallback
 return $template;

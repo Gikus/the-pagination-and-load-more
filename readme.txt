@@ -1,14 +1,14 @@
 === The Pagination and Load More ===
 
 Tested up to: 6.8
-Stable tag: 1.2.6
+Stable tag: 1.2.7
 Contributors: Sevar
 Tags: load more button, ajax pagination
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Live Preview: https://playground.wordpress.net/?blueprint-url=https://plugins.svn.wordpress.org/cubeb-pagination-and-load-more/assets/blueprint.json
 
-The lightweight solution The Pagination and Load More adds AJAX pagination and Load More functionality that work in sync for any post type.
+A lightweight solution The Pagination and Load More adds AJAX pagination and Load More functionality that work in sync for any post type.
 
 == Installation ==
 
@@ -37,7 +37,7 @@ The Pagination and Load More work reflects in the URL: if only the pagination is
 
 == Template names you can use ==
 
-For post type: files that end on  `*-page.php`, `*-template.php`, `*-home.php`, `*-post-type.php`, `*-posts.php`.
+For post type home front page: files that end on  `*-page.php`, `*-template.php`, `*-home.php`, `*-post-type.php`, `*-posts.php`.
 
 For categories: `category-{$category->slug}.php`, `category-{$category->term_id}.php`, `category.php`, `archive.php`.
 
@@ -80,3 +80,5 @@ Demo site: [https://evgenysudakov.ru/](https://evgenysudakov.ru/)
 1.2.5 - Template choice fix ultimate
 
 1.2.6 - Shortcode inside page builder fix
+
+1.2.7 - Fixed possible error on single product page
