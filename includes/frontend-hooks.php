@@ -164,8 +164,12 @@ function handle_ports_parameter_templates() {
         $wp_query->is_tag = true;
         $wp_query->is_archive = true;
         $wp_query->queried_object = get_term_by('slug', get_query_var('tag'), 'post_tag');
-    }
-    else {
+    } else if ($ports && get_query_var( 'product_brand' )) {
+        $wp_query->is_404 = false;
+        $wp_query->is_tax = true;
+        $wp_query->is_archive = true;
+        $wp_query->queried_object = get_term_by('slug', get_query_var( 'product_brand' ), 'product_brand');
+    } else {
         // It's a custom paginated page with ports parameter
         $wp_query->is_page = true;
         $wp_query->is_singular = false;
@@ -229,6 +233,15 @@ function is_wpbakery_page( $post_id = null ) {
     return false;
 }
 
+function is_divi_page( $post_id = null ) {
+    $post_id = $post_id ?: get_the_ID();
+    if ( ! $post_id ) {
+        return false;
+    }
+
+    return (bool) get_post_meta( $post_id, '_et_pb_use_builder', true );
+}
+
  
  function detect_page_builder( $post_id = null ) {
     $post_id = $post_id ?: get_the_ID();
@@ -241,6 +254,9 @@ function is_wpbakery_page( $post_id = null ) {
     }
     if ( is_gutenberg_page( $post_id ) ) {
         return 'gutenberg';
+    }
+    if ( is_divi_page( $post_id ) ) {
+        return 'divi';
     }
 
     return 'classic';
@@ -275,12 +291,13 @@ $pbuilder = detect_page_builder();
     );
  
      
-} elseif ( $pbuilder != 'gutenberg' && $pbuilder != 'elementor' && $pbuilder != 'wpbakery' && $ports && !$wp_query->is_404 && !is_404() && !is_single() && !is_singular('product') && !is_category() && !get_query_var('product_cat') && !get_query_var('category_name') && !get_query_var('product_tag') && !get_query_var('product_brand') && !get_query_var('tag')) {
+} elseif ( $pbuilder != 'gutenberg' && $pbuilder != 'elementor' && $pbuilder != 'wpbakery' && $pbuilder != 'divi' && $ports && !$wp_query->is_404 && !is_404() && !is_single() && !is_singular('product') && !is_category() && !get_query_var('product_cat') && !get_query_var('category_name') && !get_query_var('product_tag') && !get_query_var('product_brand') && !get_query_var('tag')) {
     // Custom templates in the theme
     $theme_templates = scandir( get_stylesheet_directory() );
 
     // Filter templates ending with -page.php, -template.php, -home.php, -post-type.php, -posts.php
     $templates = preg_grep( '/-(page|template|home|post-type|posts)\.php$/', $theme_templates );
+    
 }    
    
 if(!empty($templates)) {
@@ -297,66 +314,7 @@ if(!empty($templates)) {
 return $template;
 }
 
-add_action('template_redirect', 'force_template_for_woo_ports');
-function force_template_for_woo_ports() {
-    $more_param   = esc_attr( get_option('pagimore_more_url_param', 'more') );
-    $ports        = get_query_var( $more_param );
-    $product_cat  = get_query_var( 'product_cat' );
-    $product_tag  = get_query_var( 'product_tag' );
-    $product_brand = get_query_var( 'product_brand' );  
-
-    if ( $ports && ( $product_cat || $product_tag || $product_brand ) ) {
-        global $wp_query;
-
-        // Clear 404 status
-        $wp_query->is_404 = false;
-        status_header(200);
-
-        // Mark as WooCommerce taxonomy archive
-        $wp_query->is_tax              = true;
-        $wp_query->is_archive          = true;
-        $wp_query->is_product_taxonomy = true;
-
-        // Optional: mark specifically what kind of taxonomy
-        if ( $product_cat ) {
-            $wp_query->queried_object = get_term_by( 'slug', $product_cat, 'product_cat' );
-        } elseif ( $product_tag ) {
-            $wp_query->queried_object = get_term_by( 'slug', $product_tag, 'product_tag' );
-        } elseif ( $product_brand ) {
-            $wp_query->queried_object = get_term_by( 'slug', $product_brand, 'product_brand' );
-        }
-    }
-}
-
-
-// Force WooCommerce template
-add_filter('template_include', 'force_woocommerce_template_for_ports', 99);
-function force_woocommerce_template_for_ports($template) {
-    $more_param = esc_attr(get_option('pagimore_more_url_param', 'more'));
-    $ports = get_query_var($more_param);
-    $product_cat = get_query_var('product_cat');
-    
-    if ($ports && $product_cat) {
-        // Use WooCommerce taxonomy template
-        $templates = array();
-
-if ( $product_cat ) {
-    $templates[] = "taxonomy-product_cat-{$product_cat}.php";
-}
-
-$templates[] = "taxonomy-product_cat.php";
-$templates[] = "archive-product.php";
-$templates[] = "category.php";
-$templates[] = "archive.php";
-        
-        $found_template = locate_template($templates);
-        if ($found_template) {
-            return $found_template;
-        }
-    }
-    
-    return $template;
-}
+ 
 
 function pagimore_shortcode_handle() {
     

@@ -2,7 +2,7 @@
 /*
 Plugin Name: The Pagination and Load More
 Description: AJAX pagination and Load More button working synchronously.
-Version: 1.2.7
+Version: 1.2.8
 Author: Evgeny Sudakoff
 Text Domain: cubeb-pagination-and-load-more
 Domain Path: /languages
@@ -10,7 +10,7 @@ License: GPLv2
 */
 
 if (!defined('ABSPATH')) exit;
-define( 'CUBEPAGI_VERSION', '1.2.7' );
+define( 'CUBEPAGI_VERSION', '1.2.8' );
 define( 'CUBEPAGI_PLUGIN_FILE', __FILE__ );
 define( 'CUBEPAGI_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'CUBEPAGI_PLUGIN_URL', plugin_dir_url( __FILE__ ) );

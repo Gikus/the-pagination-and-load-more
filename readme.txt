@@ -1,7 +1,7 @@
 === The Pagination and Load More ===
 
 Tested up to: 6.8
-Stable tag: 1.2.7
+Stable tag: 1.2.8
 Contributors: Sevar
 Tags: load more button, ajax pagination
 License: GPLv2 or later
@@ -82,3 +82,5 @@ Demo site: [https://evgenysudakov.ru/](https://evgenysudakov.ru/)
 1.2.6 - Shortcode inside page builder fix
 
 1.2.7 - Fixed possible error on single product page
+
+1.2.8 - Small fix
