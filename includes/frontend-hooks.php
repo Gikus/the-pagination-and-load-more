@@ -291,7 +291,7 @@ $pbuilder = detect_page_builder();
     );
  
      
-} elseif ( $pbuilder != 'gutenberg' && $pbuilder != 'elementor' && $pbuilder != 'wpbakery' && $pbuilder != 'divi' && $ports && !$wp_query->is_404 && !is_404() && !is_single() && !is_singular('product') && !is_category() && !get_query_var('product_cat') && !get_query_var('category_name') && !get_query_var('product_tag') && !get_query_var('product_brand') && !get_query_var('tag')) {
+} elseif ( $pbuilder != 'gutenberg' && $pbuilder != 'elementor' && $pbuilder != 'wpbakery' && $pbuilder != 'divi' && $ports && !$wp_query->is_404 && !is_404() && !is_single() && !is_singular('product') && !is_category() && !get_query_var('product_cat') && !get_query_var('category_name') && !get_query_var('product_tag') && !get_query_var('product_brand') && !get_query_var('tag') && !get_query_var( 's' )) {
     // Custom templates in the theme
     $theme_templates = scandir( get_stylesheet_directory() );
 
