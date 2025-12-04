@@ -52,6 +52,25 @@ jQuery(document).ready(function ($) {
     };
   }
 
+  function getSearchTerm() {
+    const url = window.location.href;
+    const currentUrl = new URL(url);
+    let searchTerm = currentUrl.searchParams.get("s");
+
+    // Handle pretty permalink version like /search/something/
+    if (!searchTerm) {
+      const match = url.match(/\/search\/([^/]+)/);
+      if (match && match[1]) {
+        searchTerm = decodeURIComponent(match[1].replace(/-/g, " "));
+      }
+    }
+
+    return searchTerm || "";
+  }
+
+  // Usage:
+  const searchParam = getSearchTerm();
+
   const catBase = pagimore_ajax_data.cat_base || null;
 
   const wooCatBase = pagimore_ajax_data.woo_cat_base || null;
@@ -65,6 +84,8 @@ jQuery(document).ready(function ($) {
   let brandSlug = pagimore_ajax_data.woo_brand_slug || null;
 
   let currentSlug = pagimore_ajax_data.product_cat || null;
+
+  const qselect = pagimore_ajax_data.query_selector || "post-list";
 
   // Norma slash
 
@@ -140,7 +161,7 @@ jQuery(document).ready(function ($) {
     function loadPosts2(page, append = false, isLast = false) {
       if (isLoading) return Promise.reject();
       isLoading = true;
-
+      const grid = $("." + qselect).closest(".pagimore-grid");
       $(".pagination-btn, .load-pagimore")
         .prop("disabled", true)
         .addClass("disabled");
@@ -163,18 +184,21 @@ jQuery(document).ready(function ($) {
             category_base: catBase,
             woo_category_base: wooCatBase,
             brand_slug: brandSlug,
+            s: searchParam || "",
+            qselect: qselect,
             security: pagimore_ajax_data.nonce,
           },
           beforeSend: function () {
             if (!append && !isMoreSequence) {
               $("." + pagimore_ajax_data.query_selector).empty();
             }
-            $(".page-loading").addClass("loading");
+            $(".ready").addClass("loading");
           },
           success: function (response) {
-            $(".page-loading").removeClass("loading");
-            $(".page-loading").remove();
-
+            if ($(".ready")) {
+              $(".ready").removeClass("loading");
+            }
+            grid.removeClass("load");
             if (response.html) {
               if (append) {
                 $("." + pagimore_ajax_data.query_selector).append(
@@ -185,10 +209,7 @@ jQuery(document).ready(function ($) {
               }
 
               if (isLast) {
-                $(".ajax-pagination").remove();
-                $("." + pagimore_ajax_data.query_selector).after(
-                  response.pagination
-                );
+                $(".loading-more").after(response.pagination);
               }
               maxPages = response.max_pages;
               // Update perPage2 from response if changed
@@ -198,12 +219,17 @@ jQuery(document).ready(function ($) {
           },
           error: function (xhr, status, error) {
             $(".page-loading").removeClass("loading");
-            $(".page-loading").remove();
 
             console.error("AJAX error:", status, error);
             reject(error);
           },
           complete: function () {
+            if ($(".page-loading")) {
+              $(".page-loading").removeClass("ready");
+            }
+            if ($(".loading-more")) {
+              $(".loading-more").removeClass("ready");
+            }
             isLoading = false;
             $(".pagination-btn, .load-pagimore")
               .prop("disabled", false)
@@ -219,12 +245,28 @@ jQuery(document).ready(function ($) {
       let basePath = window.location.pathname.replace(tailRe, "");
       if (basePath.endsWith("/")) basePath = basePath.slice(0, -1);
 
-      let url = `${basePath}/page/${page}/`;
+      const urlParams = new URLSearchParams(window.location.search);
+      const searchParam = urlParams.get("s"); // detect search
 
-      if (isMoreSequence && moreStartPage !== null) {
-        url += `${moreUrlPeramVar}/${moreStartPage}/`;
-      } else if (isLoadMore && moreStartPage !== null) {
-        url += `${moreUrlPeramVar}/${moreStartPage}/`;
+      let url;
+      if (searchParam) {
+        // If search is active, use ?s=term&paged=N format
+        urlParams.set("paged", page);
+        if (
+          (isMoreSequence && moreStartPage !== null) ||
+          (isLoadMore && moreStartPage !== null)
+        ) {
+          urlParams.set(moreUrlPeramVar, moreStartPage || "");
+        }
+        url = `${window.location.origin}${basePath}?${urlParams.toString()}`;
+      } else {
+        url = `${basePath}/page/${page}/`;
+
+        if (isMoreSequence && moreStartPage !== null) {
+          url += `${moreUrlPeramVar}/${moreStartPage}/`;
+        } else if (isLoadMore && moreStartPage !== null) {
+          url += `${moreUrlPeramVar}/${moreStartPage}/`;
+        }
       }
 
       window.history.replaceState({ page }, "", url);
@@ -314,7 +356,7 @@ jQuery(document).ready(function ($) {
   function loadPosts(page, append = false, postsPerPage = perPage) {
     if (isLoading) return; // Prevent new requests
     isLoading = true;
-
+    const grid = $("." + qselect).closest(".pagimore-grid");
     $(".pagination-btn, .load-pagimore")
       .prop("disabled", true)
       .addClass("disabled");
@@ -337,19 +379,21 @@ jQuery(document).ready(function ($) {
         category_base: catBase,
         woo_category_base: wooCatBase,
         brand_slug: brandSlug,
+        s: searchParam || "",
+        qselect: qselect,
         security: pagimore_ajax_data.nonce,
       },
       beforeSend: function () {
-        $(".page-loading").addClass("loading");
-        if (!append) {
-          $("." + pagimore_ajax_data.query_selector).empty();
-        }
+        $(".ready").addClass("loading");
       },
       success: function (response) {
-        $(".page-loading").removeClass("loading");
-        $(".page-loading").remove();
+        if ($(".ready")) {
+          $(".ready").removeClass("loading");
+        }
+
         console.log("loadPosts", postTag);
 
+        grid.removeClass("load");
         if (response.html) {
           if (!append) {
             // Full replace
@@ -387,11 +431,17 @@ jQuery(document).ready(function ($) {
       },
       error: function (xhr, status, error) {
         $(".page-loading").removeClass("loading");
-        $(".page-loading").remove();
 
         console.error("AJAX error:", status, error);
       },
       complete: function () {
+        if ($(".page-loading")) {
+          $(".page-loading").removeClass("ready");
+        }
+        if ($(".loading-more")) {
+          $(".loading-more").removeClass("ready");
+        }
+
         isLoading = false;
         $(".pagination-btn, .load-pagimore")
           .prop("disabled", false)
@@ -403,19 +453,60 @@ jQuery(document).ready(function ($) {
   function updateUrl(page, isLoadMore = false, loadMoreStartPage = null) {
     const safe = escapeRegExp(moreUrlPeramVar);
     const tailRe = new RegExp("/page/\\d+/(?:" + safe + "/\\d+)?/?$");
-    let basePath = window.location.pathname.replace(tailRe, "");
 
-    if (basePath.endsWith("/")) {
-      basePath = basePath.slice(0, -1);
+    // Remove /page/x/more/y/ from current URL
+    let basePath = window.location.pathname.replace(tailRe, "");
+    if (basePath.endsWith("/")) basePath = basePath.slice(0, -1);
+
+    const isSearch =
+      window.location.pathname.includes("/search/") ||
+      new URLSearchParams(window.location.search).has("s");
+
+    let url = "";
+
+    //
+    // ✅ SEARCH MODE
+    //
+    if (isSearch) {
+      const searchMatch = window.location.pathname.match(/\/search\/([^/]+)/);
+      let searchTerm = searchMatch ? searchMatch[1] : null;
+
+      // If not in pretty permalinks, take it from ?s=
+      if (!searchTerm) {
+        searchTerm = new URLSearchParams(window.location.search).get("s");
+      }
+
+      if (!searchTerm) return; // Prevents errors
+
+      searchTerm = decodeURIComponent(searchTerm);
+
+      url = `${window.location.origin}/search/${searchTerm}/`;
+
+      if (page > 1) {
+        url += `page/${page}/`;
+      }
+
+      if (isLoadMore && loadMoreStartPage !== null) {
+        url += `${moreUrlPeramVar}/${loadMoreStartPage}/`;
+      }
+
+      window.history.pushState({ page }, "", url);
+      return;
     }
-    let url = `${basePath}/page/${page}/`;
+
+    //
+    // ✅ NORMAL MODE (not search)
+    //
+    url = `${basePath}/page/${page}/`;
+
     if (isLoadMore) {
       url +=
         loadMoreStartPage !== null
           ? `${moreUrlPeramVar}/${loadMoreStartPage}/`
           : `${moreUrlPeramVar}/`;
     }
-    window.history.pushState({ page: page }, "", url);
+
+    window.history.pushState({ page }, "", url);
   }
 
   let loadMoreOriginPage = null;
@@ -427,7 +518,9 @@ jQuery(document).ready(function ($) {
       currentPage = page;
       loadedPages = [page];
       loadMoreOriginPage = page;
-
+      const grid = $("." + qselect).closest(".pagimore-grid");
+      grid.addClass("load");
+      $(".page-loading").addClass("ready");
       loadPosts(page, false, pperPage);
       if (!pagimore_ajax_data.remove_pages) {
         updateUrl(page, false);
@@ -438,6 +531,7 @@ jQuery(document).ready(function ($) {
   if (enableLoadMore) {
     $(document).on("click", ".load-pagimore", function () {
       if (!enableLoadMore) return;
+      const moretext = $(".loading-more");
 
       // ensure loadedPages has at least currentPage
       if (!Array.isArray(loadedPages) || loadedPages.length === 0)
@@ -457,7 +551,7 @@ jQuery(document).ready(function ($) {
         if (urlMoreNumber !== null) loadMoreOriginPage = urlMoreNumber;
         else loadMoreOriginPage = currentPage;
       }
-
+      moretext.addClass("ready");
       // call loadPosts — prefer it to return a Promise (see note)
       const maybePromise = loadPosts(nextPage, true, pperPage);
 

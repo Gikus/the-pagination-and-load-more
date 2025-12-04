@@ -1,10 +1,11 @@
 jQuery(document).ready(function ($) {
-  // Handle image upload for both arrows
-  $(".pagimore-arrow-upload").on("click", function (e) {
+  // Common upload handler for BOTH arrow & preloader buttons
+  $(".pagimore-arrow-upload, .pagimore-gif-upload").on("click", function (e) {
     e.preventDefault();
+
     const target = $(this).data("target");
     const frame = wp.media({
-      title: "Select Arrow Icon",
+      title: "Select Image",
       button: { text: "Use This Image" },
       multiple: false,
     });
@@ -15,21 +16,31 @@ jQuery(document).ready(function ($) {
       $("#" + target + "-preview")
         .attr("src", attachment.url)
         .show();
-      $('.pagimore-arrow-remove[data-target="' + target + '"]').show();
+
+      $(
+        '.pagimore-arrow-remove[data-target="' +
+          target +
+          '"], .pagimore-gif-remove[data-target="' +
+          target +
+          '"]'
+      ).show();
     });
 
     frame.open();
   });
 
-  // Handle image removal for both arrows
-  $(".pagimore-arrow-remove").on("click", function (e) {
+  // Common remove handler
+  $(".pagimore-arrow-remove, .pagimore-gif-remove").on("click", function (e) {
     e.preventDefault();
+
     const target = $(this).data("target");
     $("#" + target + "-input").val("");
     $("#" + target + "-preview")
       .attr("src", "")
       .hide();
+
     $(this).hide();
   });
+
   $(".pagi-color-picker").wpColorPicker();
 });

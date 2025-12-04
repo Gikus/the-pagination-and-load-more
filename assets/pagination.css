@@ -45,14 +45,17 @@
   border-radius: 4px;
 }
 
-.page-loading {
-  display: none;
-}
-.page-loading.loading {
-  display: block;
+.loading-more {
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
   text-align: center;
-  padding: 20px;
-  color: #555;
+  color: #333333;
+  font-size: 16px;
+  margin-top: 10px;
+}
+.loading-more.loading {
+  opacity: 1;
 }
 .product-pagi__next,
 .product-pagi__prev {
@@ -80,4 +83,49 @@
   .load-pagimore {
     margin-top: 10px;
   }
+}
+
+/* Loading   */
+
+.pagimore-grid {
+  position: relative;
+}
+
+/* Overlay dims the posts */
+.pagimore-grid .overlay-loader {
+  position: absolute;
+  inset: 0; /* top:0; right:0; bottom:0; left:0 */
+  background: rgba(255, 255, 255, 0.35); /* semi-transparent overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+/* Show overlay on load */
+.pagimore-grid.load .overlay-loader {
+  opacity: 1;
+}
+
+/* Keep preloader fully visible on top of everything */
+.pagimore-grid .page-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999; /* higher than overlay */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  text-align: center;
+  color: #333333;
+  font-size: 16px;
+}
+
+/* Show the preloader when loading */
+.pagimore-grid .page-loading.loading {
+  opacity: 1;
 }

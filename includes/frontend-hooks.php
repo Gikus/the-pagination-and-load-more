@@ -110,6 +110,50 @@ add_rewrite_rule(
     'index.php?pagename=' . get_option('page_on_front') . '&paged=$matches[1]&' . $more_param . '=$matches[2]',
     'top'
 );
+
+// Search
+
+// 1. /search/term/page/3/fromthe/2/
+    add_rewrite_rule(
+        "search/([^/]+)/page/([0-9]+)/" . preg_quote($more_param, '#') . "/([0-9]+)/?$",
+        'index.php?s=$matches[1]&paged=$matches[2]&' . $more_param . '=$matches[3]',
+        'top'
+    );
+
+    // 2. /search/term/page/3/
+    add_rewrite_rule(
+        "search/([^/]+)/page/([0-9]+)/?$",
+        'index.php?s=$matches[1]&paged=$matches[2]',
+        'top'
+    );
+
+    // 3. /search/term/fromthe/2/  (page 1)
+    add_rewrite_rule(
+        "search/([^/]+)/" . preg_quote($more_param, '#') . "([0-9]+)/?$",
+        'index.php?s=$matches[1]&' . $more_param . '=$matches[2]',
+        'top'
+    );
+
+    // 4. /search/term/  (page 1, no more)
+    add_rewrite_rule(
+        'search/([^/]+)/?$',
+        'index.php?s=$matches[1]',
+        'top'
+    );
+
+    // 5. /search/term/page/1/ → /search/term/ (clean URL)
+    add_rewrite_rule(
+        "search/([^/]+)/page/1/?$",
+        'index.php?s=$matches[1]',
+        'top'
+    );
+
+    // 6. /search/term/page/1/fromthe/X/ → /search/term/ (clean)
+    add_rewrite_rule(
+        "search/([^/]+)/page/1/" . preg_quote($more_param, '#') . "/([0-9]+)/?$",
+        'index.php?s=$matches[1]',
+        'top'
+    );
     }
     
     // Flush rules on activation
@@ -129,6 +173,41 @@ new CubebCustomUrlParameters();
 // Hook activation and deactivation
 register_activation_hook(__FILE__, array('CustomUrlParameters', 'activate'));
 register_deactivation_hook(__FILE__, array('CustomUrlParameters', 'deactivate'));
+
+add_action('template_redirect', function() {
+    if (is_search() && !is_admin() && !wp_doing_ajax()) {
+        $more_param = esc_attr(get_option('pagimore_more_url_param', 'more'));
+        $s = get_query_var('s');
+
+        // Only redirect if the current URL has ?s= in the query string
+        if ($s && isset($_GET['s'])) {
+            $redirect = home_url("/search/" . rawurlencode($s) . "/");
+
+            $paged = get_query_var('paged');
+            $more  = get_query_var($more_param);
+
+            if ($paged && $paged > 1) {
+                $redirect .= "page/{$paged}/";
+            }
+            if ($more) {
+                $redirect .= "{$more_param}/{$more}/";
+            }
+
+            // Preserve any other GET parameters
+            $other_params = $_GET;
+            unset($other_params['s']); // already in path
+            if ($other_params) {
+                $redirect .= '?' . http_build_query($other_params);
+            }
+
+            // Only redirect if we're not already on the target URL
+            if (untrailingslashit($_SERVER['REQUEST_URI']) !== untrailingslashit(parse_url($redirect, PHP_URL_PATH))) {
+                wp_redirect($redirect, 301);
+                exit;
+            }
+        }
+    }
+});
  
 // Sortcode for the pagimore_loop
 
@@ -265,7 +344,7 @@ function is_divi_page( $post_id = null ) {
 $pbuilder = detect_page_builder();
       
    // Get the template assigned in Page Attributes
-    $assigned_template = get_page_template_slug( $post->ID ); 
+    $assigned_template = $post->ID ?? null ? get_page_template_slug( $post->ID ) : '';
 
     if ( $assigned_template && file_exists( get_stylesheet_directory() . '/' . $assigned_template ) ) {
         // Use the assigned template
@@ -291,14 +370,14 @@ $pbuilder = detect_page_builder();
     );
  
      
-} elseif ( $pbuilder != 'gutenberg' && $pbuilder != 'elementor' && $pbuilder != 'wpbakery' && $pbuilder != 'divi' && $ports && !$wp_query->is_404 && !is_404() && !is_single() && !is_singular('product') && !is_category() && !get_query_var('product_cat') && !get_query_var('category_name') && !get_query_var('product_tag') && !get_query_var('product_brand') && !get_query_var('tag') && !get_query_var( 's' )) {
+} elseif ( $pbuilder != 'gutenberg' && $pbuilder != 'elementor' && $pbuilder != 'wpbakery' && $pbuilder != 'divi' && $ports && !$wp_query->is_404 && !is_404() && !is_single() && !is_singular('product') && !is_category() && !get_query_var('product_cat') && !get_query_var('category_name') && !get_query_var('product_tag') && !get_query_var('product_brand') && !get_query_var('tag') && !is_search()) {
     // Custom templates in the theme
     $theme_templates = scandir( get_stylesheet_directory() );
 
     // Filter templates ending with -page.php, -template.php, -home.php, -post-type.php, -posts.php
-    $templates = preg_grep( '/-(page|template|home|post-type|posts)\.php$/', $theme_templates );
+    $templates = preg_grep( '/-(page|template|home|post-type|posts|canvas)\.php$/', $theme_templates );
     
-}    
+}     
    
 if(!empty($templates)) {
  // Locate the first existing template
@@ -416,6 +495,13 @@ if ($ports) {
 
  } 
 
+ if ( is_search() ) {
+    $search_query = get_query_var( 's' );
+    if ( ! empty( $search_query ) ) {
+        $args['s'] = sanitize_text_field( $search_query );
+    }
+}
+
    $sclass = esc_attr(get_option('pagimore_query_selector', 'post-list'));
 
     $qselect = ltrim($sclass, '.#'); // removes leading dot or hash if exists
@@ -455,12 +541,36 @@ if ( ! $blog_posts->have_posts() && !$ports) {
     }
     }  
 
+    $type  = get_option('pagimore_preloader_type', 'text');
+$text  = get_option('pagimore_preloader_text', 'Loading...');
+$gif   = get_option('pagimore_gif_icon', CUBEPAGI_PLUGIN_URL . 'assets/images/dots-loading.gif');
+
+ 
+  
     ?>
+     <div class="pagimore-grid">
+        <div class="overlay-loader"></div>
 <section class="<?php echo esc_attr($qselect); ?>">
     <?php if ($blog_posts->have_posts()): while ($blog_posts->have_posts()): $blog_posts->the_post(); ?>
    <?php  $current_type = get_post_type(); get_template_part( 'template-parts/content', $current_type ); ?>
   <?php endwhile; endif; wp_reset_postdata(); ?>
 </section>
+ 
+<div class="page-loading">  
+    <?php if ($type === 'gif'): ?>  <!-- Use strict comparison for safety -->
+        <img src="<?php echo esc_url($gif); ?>" alt="loading">
+    <?php else: ?>
+        <span><?php echo esc_html($text); ?></span>
+    <?php endif; ?>
+</div> 
+</div>
+<div class="loading-more">
+   <?php if ($type === 'gif'): ?>  <!-- Use strict comparison for safety -->
+        <img src="<?php echo esc_url($gif); ?>" alt="loading">
+    <?php else: ?>
+        <span><?php echo esc_html($text); ?></span>
+    <?php endif; ?>
+</div>
 <?php
 // render pagination controls
 if ( $blog_posts->max_num_pages > 1 ) {
@@ -476,6 +586,27 @@ if ( $blog_posts->max_num_pages > 1 ) {
    return ob_get_clean();
 }
 add_shortcode('cubeab_code', 'pagimore_shortcode_handle');
+
+add_action('pre_get_posts', function($query) {
+    if (is_admin() || !$query->is_main_query()) return;
+
+    if ($query->is_search()) {
+        // AJAX: from $_POST
+        if (wp_doing_ajax() && isset($_POST['per_page'])) {
+            $per_page = absint($_POST['per_page']);
+        }
+        // Normal load: from $_GET
+        elseif (isset($_GET['per_page'])) {
+            $per_page = absint($_GET['per_page']);
+        }
+        // Fallback
+        else {
+            $per_page = 2;
+        }
+
+        $query->set('posts_per_page', $per_page);
+    }
+});
 
 add_action('wp_enqueue_scripts', function() {
     $enable_pagination = get_option('pagimore_enable_pagination', 1);
@@ -698,6 +829,7 @@ $current_brand = sanitize_text_field(
 if ( empty( $append ) ) {
     $accumulated_pages = [ $paged ];
 }
+$search_query = isset($_POST['s']) ? sanitize_text_field($_POST['s']) : get_query_var('s');
 
 $post_type = get_option('pagimore_post_type', 'post');
 
@@ -794,6 +926,19 @@ $args = [
             ],
         ],
     ];
+} elseif ( $search_query ) {
+    if ( ! empty( $search_query ) ) {
+        $args = [
+    'post_type'           => $post_type,
+    'posts_per_page'      => $per_page,
+    'ignore_sticky_posts' => true,
+    'paged'               => $paged,
+    'post_status'         => 'publish',
+    'orderby'             => 'post_date',
+    'order'               => 'DESC',
+    's'                   => $search_query,
+];
+    }
 } else {
    
     $args = [
@@ -827,6 +972,7 @@ if ($ports) {
             <?php get_template_part('template-parts/content', $current_type); ?>
         <?php endwhile;
     endif;
+    
     $html = ob_get_clean();
 
     ob_start();

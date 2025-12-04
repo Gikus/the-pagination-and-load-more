@@ -1,9 +1,9 @@
 === The Pagination and Load More ===
 
 Tested up to: 6.8
-Stable tag: 1.2.9
+Stable tag: 1.2.12
 Contributors: Sevar
-Tags: load more button, ajax pagination
+Tags: load more, load more button, ajax pagination
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Live Preview: https://playground.wordpress.net/?blueprint-url=https://plugins.svn.wordpress.org/cubeb-pagination-and-load-more/assets/blueprint.json
@@ -31,13 +31,13 @@ The AJAX pagination menu will appear in the left sidebar in the Settings
 
 How to use in theme/templates?
  
-In your /themes/ folder create another folder, if you haven't already, "template-parts". Create and place into this folder a file: "content-{post_type}.php". If you want to paginate, for example,  woocommerce products, then after "-" type the name of the Post Type and it would look like so: "content-product.php". If it would be just posts then it would look like so:  "content-post.php" and so on.  Inside the file you need to place your loop item, for example a product card. Then on the page or/and category/subcategory or a tag template or product brand, of the same post type, where you want to have your paginated content, place the shortcode `[cubeab_code]`. Then, in the plugin's settings you also want to select the post type and configure the rest of the settings according to your needs. 
+In your /themes/ folder create another folder, if you haven't already, "template-parts". Create and place into this folder a file: "content-{post_type}.php". If you want to paginate, for example,  woocommerce products, then after "-" type the name of the Post Type and it would look like so: "content-product.php". If it would be just posts then it would look like so:  "content-post.php" and so on.  Inside the file you need to place your loop item, for example a product card. Then on the page of a post type or/and category/subcategory or a tag template or product brand or search results of the same post type, where you want to have your paginated content, place the shortcode `[cubeab_code]`. Then, in the plugin's settings you also want to select the post type and configure the rest of the settings according to your needs. 
 
 The Pagination and Load More work reflects in the URL: if only the pagination is engaged then it shows only page number, like `/page/4/` but if they work together with Load More button then the URL would be like `/page/4/more/3/ `, it means that the button Load More was clicked on the page 3 and loaded additionally one more page. The `/more/` text you can easily change. IMPORTANT - after changing `/more/` slug, save permalinks: In the left-hand menu, go to Settings > Permalinks. The `/more/` path segments are hidden from search index. The plugin has many free options in the settings. If you don't need the pages' path segments in URL you can easily disable it in the settings. You can also show only pagination or only LoadMore button or show each one based on device's screen width.
 
 == Template names you can use ==
 
-For post type home front page: files that end on  `*-page.php`, `*-template.php`, `*-home.php`, `*-post-type.php`, `*-posts.php`.
+For a post type on the home front page: files that end on  `*-page.php`, `*-template.php`, `*-home.php`, `*-post-type.php`, `*-posts.php`.
 
 For categories: `category-{$category->slug}.php`, `category-{$category->term_id}.php`, `category.php`, `archive.php`.
 
@@ -48,6 +48,8 @@ for post tags:  `tag-{$post_tag}.php`, `tag.php`, `archive.php`, `index.php`.
 For woocommerce tags:  `product-tag-{$tag->slug}.php`, `product-tag-{$tag->term_id}.php`, `taxonomy-product_tag`, `product-tag.php`, `archive-product.php`, `archive.php`.
 
 For product brands in `get_query_var('product_brand')`: `taxonomy-product_brand-{$brand_slug}.php`, `taxonomy-product_brand-{$term->term_id}.php`, `taxonomy-product_brand.php`, `archive-product.php`, `archive.php`, `index.php`
+
+For search results, for example: `search.php`
 
 For not found 404 page: files that end on `*-page404.php`, `*-404.php` or such full names as: `404.php`, `notfound.php`. If you use some plugin to define your 404 slug then attach your 404 template mentioned above to a page and the slug of the page place into the plugin's settings.
 
@@ -84,3 +86,9 @@ Demo site: [https://evgenysudakov.ru/](https://evgenysudakov.ru/)
 1.2.7 - Fixed possible error on single product page
 
 1.2.8 - Small fix
+
+1.2.10 - search results support
+
+1.2.11 - Changed posts loading style and added gif option for preloader
+
+1.2.12 - an error message fixed

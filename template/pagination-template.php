@@ -35,7 +35,7 @@ if (!$show_pagination && !$show_load_more) {
 
 ?>
  
-<div class="page-loading"><?php echo esc_html($pagimore_preloader_text); ?></div>
+
 <div class="ajax-pagination product-pagi" data-posts-per-page="<?php echo esc_attr($ppp); ?>">
     <div class="product-pagi__wrapper">
     <?php if ($show_pagination): ?>

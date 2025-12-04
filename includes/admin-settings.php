@@ -35,6 +35,20 @@ function pagimore_arrow_icon_field($args) {
     <?php
 }
 
+// Preloader icon field render function
+function pagimore_preloader_icon_field($args) {
+    $option = $args['option_name'];
+    $preloader_url = get_option($option);
+    ?>
+    <div>
+        <img id="<?php echo esc_html($option); ?>-preview" src="<?php echo esc_url($preloader_url); ?>" style="max-width:50px; <?php echo esc_url($preloader_url) ? '' : 'display:none;'; ?>">
+        <input type="text" id="<?php echo esc_html($option); ?>-input" name="<?php echo esc_html($option); ?>" value="<?php echo esc_url($preloader_url); ?>" style="width:70%;" placeholder="<?php echo esc_attr__( 'Or some preloader gif url here', 'cubeb-pagination-and-load-more' ); ?>">
+        <button type="button" class="button pagimore-gif-upload" data-target="<?php echo esc_html($option); ?>"><?php echo esc_html__('Choose Image', 'cubeb-pagination-and-load-more'); ?></button>
+        <button type="button" class="button pagimore-gif-remove" data-target="<?php echo esc_html($option); ?>" <?php echo esc_url($preloader_url) ? '' : 'style="display:none;"'; ?>><?php echo esc_html__('Remove', 'cubeb-pagination-and-load-more'); ?></button>
+    </div>
+    <?php
+}
+
 function pagimore_render_settings_page() {
     ?>
     <div class="wrap">
@@ -91,6 +105,7 @@ function pagimore_render_settings_page() {
                         <?php pagimore_arrow_icon_field(['option_name' => 'pagimore_next_arrow_icon']); ?>
                     </td>
                 </tr>
+                 
                 <tr valign="top">
                     <th scope="row"><?php echo esc_html__('Url path segment for Load More', 'cubeb-pagination-and-load-more'); ?></th>
                     <td>
@@ -99,10 +114,36 @@ function pagimore_render_settings_page() {
                     </td>
                 </tr>
                 <tr valign="top">
+    <th scope="row"><?php echo esc_html__('Preloader type', 'cubeb-pagination-and-load-more'); ?></th>
+    <td>
+        <?php $type = get_option('pagimore_preloader_type', 'text'); ?>
+
+        <label>
+            <input type="radio" name="pagimore_preloader_type"
+                   value="text" <?php checked($type, 'text'); ?>>
+            <?php echo __('Use text', 'cubeb-pagination-and-load-more'); ?>
+        </label>
+        <br>
+
+        <label>
+            <input type="radio" name="pagimore_preloader_type"
+                   value="gif" <?php checked($type, 'gif'); ?>>
+            <?php echo __('Use GIF icon', 'cubeb-pagination-and-load-more'); ?>
+        </label>
+    </td>
+</tr>
+
+                <tr valign="top">
                     <th scope="row"><?php echo esc_html__('Preloader text', 'cubeb-pagination-and-load-more'); ?></th>
                     <td>
                         <input type="text" name="pagimore_preloader_text" value="<?php echo esc_attr(get_option('pagimore_preloader_text', 'Loading...')); ?>" style="width: 300px;">
                         <p class="description"><?php echo esc_html__('Change the text that appears before results are loaded', 'cubeb-pagination-and-load-more'); ?></p>
+                    </td>
+                </tr>
+                 <tr valign="top">
+                    <th scope="row"><?php echo esc_html__('Preloader gif', 'cubeb-pagination-and-load-more'); ?></th>
+                    <td>
+                        <?php pagimore_preloader_icon_field(['option_name' => 'pagimore_gif_icon']); ?>
                     </td>
                 </tr>
                  <tr valign="top">
@@ -308,6 +349,14 @@ return sanitize_text_field($value);
             return $value === '' ? CUBEPAGI_PLUGIN_URL . 'assets/images/slick-arrow-r-active.svg' : $value;
         }
     ]);
+
+    register_setting('pagimore_settings_group', 'pagimore_gif_icon', [
+        'default' => CUBEPAGI_PLUGIN_URL . 'assets/images/dots-loading.gif',
+        'sanitize_callback' => function ( $value ) {
+              $value = esc_url_raw( trim( $value ) );
+            return $value === '' ? CUBEPAGI_PLUGIN_URL . 'assets/images/dots-loading.gif' : $value;
+        }
+    ]);
      
     register_setting('pagimore_settings_group', 'pagimore_preloader_text', ['default' => 'Loading...', 
             'sanitize_callback' => function ($value) {
@@ -322,6 +371,14 @@ return sanitize_text_field($value);
                 return $value === '' ? 'Load More' : $value;
             }
         ]);
+
+        // radio setting: text or gif
+register_setting('pagimore_settings_group', 'pagimore_preloader_type', [
+    'default' => 'text',
+    'sanitize_callback' => function ($value) {
+        return in_array($value, ['text', 'gif'], true) ? $value : 'text';
+    }
+]);
          
        
 });
