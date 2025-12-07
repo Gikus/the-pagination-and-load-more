@@ -1,9 +1,9 @@
 === The Pagination and Load More ===
 
-Tested up to: 6.8
-Stable tag: 1.2.12
+Tested up to: 6.9
+Stable tag: 1.2.13
 Contributors: Sevar
-Tags: load more, load more button, ajax pagination
+Tags: load more, load more button, ajax pagination, ajax load more
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Live Preview: https://playground.wordpress.net/?blueprint-url=https://plugins.svn.wordpress.org/cubeb-pagination-and-load-more/assets/blueprint.json
@@ -92,3 +92,5 @@ Demo site: [https://evgenysudakov.ru/](https://evgenysudakov.ru/)
 1.2.11 - Changed posts loading style and added gif option for preloader
 
 1.2.12 - an error message fixed
+
+1.2.13 - fixed odd pagination behaviour 

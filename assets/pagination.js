@@ -209,6 +209,7 @@ jQuery(document).ready(function ($) {
               }
 
               if (isLast) {
+                $(".ajax-pagination").remove();
                 $(".loading-more").after(response.pagination);
               }
               maxPages = response.max_pages;
