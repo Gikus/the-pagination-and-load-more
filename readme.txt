@@ -1,7 +1,7 @@
 === The Pagination and Load More ===
 
 Tested up to: 6.9
-Stable tag: 1.2.13
+Stable tag: 1.2.14
 Contributors: Sevar
 Tags: load more, load more button, ajax pagination, ajax load more
 License: GPLv2 or later
@@ -59,23 +59,23 @@ Demo site: [https://evgenysudakov.ru/](https://evgenysudakov.ru/)
 
 == Changelog: ==
 
-1.0.0 - initial upload
+1.0.0 - Initial upload
 
-1.1.5 - noindex /more/ and dynamic container fix
+1.1.5 - Noindex /more/ and dynamic container fix
 
-1.1.6 - not found 404 fix and other minor fixes
+1.1.6 - Not found 404 fix and other minor fixes
 
-1.1.7 - small fix
+1.1.7 - Small fix
  
-1.1.8 - small fix published posts only
+1.1.8 - Small fix published posts only
 
-1.2.0 - many fixes, added support for product brands
+1.2.0 - Many fixes, added support for product brands
 
-1.2.1 - small fix
+1.2.1 - Small fix
 
-1.2.2 - category template fix
+1.2.2 - Category template fix
 
-1.2.3 - var $categ_base is not exist fix
+1.2.3 - Var $categ_base is not exist fix
 
 1.2.4 - Template choice fix
 
@@ -87,10 +87,12 @@ Demo site: [https://evgenysudakov.ru/](https://evgenysudakov.ru/)
 
 1.2.8 - Small fix
 
-1.2.10 - search results support
+1.2.10 - Search results support
 
 1.2.11 - Changed posts loading style and added gif option for preloader
 
-1.2.12 - an error message fixed
+1.2.12 - An error message fixed
 
-1.2.13 - fixed odd pagination behaviour 
+1.2.13 - Fixed odd pagination behaviour 
+
+1.2.14 - Replaced <section> by <div>

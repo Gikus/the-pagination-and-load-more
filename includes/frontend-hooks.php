@@ -550,11 +550,11 @@ $gif   = get_option('pagimore_gif_icon', CUBEPAGI_PLUGIN_URL . 'assets/images/do
     ?>
      <div class="pagimore-grid">
         <div class="overlay-loader"></div>
-<section class="<?php echo esc_attr($qselect); ?>">
+<div class="<?php echo esc_attr($qselect); ?>">
     <?php if ($blog_posts->have_posts()): while ($blog_posts->have_posts()): $blog_posts->the_post(); ?>
    <?php  $current_type = get_post_type(); get_template_part( 'template-parts/content', $current_type ); ?>
   <?php endwhile; endif; wp_reset_postdata(); ?>
-</section>
+</div>
  
 <div class="page-loading">  
     <?php if ($type === 'gif'): ?>  <!-- Use strict comparison for safety -->
