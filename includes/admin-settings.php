@@ -218,6 +218,38 @@ function pagimore_render_settings_page() {
         <p class="description"><?php echo esc_html__('Check this if you need pagination without URL change', 'cubeb-pagination-and-load-more'); ?></p>
     </td>
 </tr>
+
+ <tr valign="top">
+                    <th scope="row"><?php echo esc_html__('Url segment of the 404 page', 'cubeb-pagination-and-load-more'); ?></th>
+                    <td>
+                        <input type="text" name="pagimore_404" value="<?php echo esc_attr(get_option('pagimore_404', '/404/')); ?>" style="width: 300px;">
+                        <p class="description"><?php echo esc_html__('Change the url slug to yours if needed', 'cubeb-pagination-and-load-more'); ?></p>
+                    </td>
+                </tr>
+
+                <tr valign="top">
+                    <th scope="row"><?php echo esc_html__('Text for not found posts', 'cubeb-pagination-and-load-more'); ?></th>
+                    <td>
+                        <input type="text" name="pagimore_notfound_text" value="<?php echo esc_attr(get_option('pagimore_notfound_text', 'No posts found')); ?>" style="width: 300px;">
+                        <p class="description"><?php echo esc_html__('Change the text to yours if needed', 'cubeb-pagination-and-load-more'); ?></p>
+                    </td>
+                </tr>
+
+                <tr valign="top">
+                    <th scope="row"><?php echo esc_html__('Posts order', 'cubeb-pagination-and-load-more'); ?></th>
+                    <td>
+                        <input type="text" name="pagimore_order" value="<?php echo esc_attr(get_option('pagimore_order', 'DESC')); ?>" style="width: 300px;">
+                        <p class="description"><?php echo esc_html__('Change the order to ASC or DESC', 'cubeb-pagination-and-load-more'); ?></p>
+                    </td>
+                </tr>
+
+                <tr valign="top">
+                    <th scope="row"><?php echo esc_html__('Posts order by', 'cubeb-pagination-and-load-more'); ?></th>
+                    <td>
+                        <input type="text" name="pagimore_orderby" value="<?php echo esc_attr(get_option('pagimore_orderby', 'post_date')); ?>" style="width: 300px;">
+                        <p class="description"><?php echo esc_html__('Change the - orderby - to your needs', 'cubeb-pagination-and-load-more'); ?></p>
+                    </td>
+                </tr>
  
             </table>
             <?php submit_button(); ?>
@@ -335,6 +367,8 @@ return sanitize_text_field($value);
         }
     ]
 );
+
+  
     register_setting('pagimore_settings_group', 'pagimore_prev_arrow_icon', [
         'default' => CUBEPAGI_PLUGIN_URL . 'assets/images/slick-arrow-l-active.svg',
         'sanitize_callback' => function ( $value ) {
@@ -379,6 +413,64 @@ register_setting('pagimore_settings_group', 'pagimore_preloader_type', [
         return in_array($value, ['text', 'gif'], true) ? $value : 'text';
     }
 ]);
-         
+
+register_setting(
+    'pagimore_settings_group',
+    'pagimore_404',
+    [
+        'default' => '/404/',
+        'sanitize_callback' => function ($value) {
+            $value = trim($value);
+
+            if ($value === '') {
+                return '/404/';
+            }
+
+            // Ensure leading slash
+            $value = '/' . ltrim($value, '/');
+
+            // Ensure trailing slash
+            $value = trailingslashit($value);
+
+            return $value;
+        }
+    ]
+);
+
+    register_setting(
+    'pagimore_settings_group',      
+    'pagimore_notfound_text',       
+    [
+        'default'           => 'No posts found', // Default value
+        'sanitize_callback' => function ($value) {
+            $value = trim($value);
+            return $value === '' ? 'No posts found' : $value;
+        }
+    ]
+);  
+
+ register_setting(
+    'pagimore_settings_group',      
+    'pagimore_order',       
+    [
+        'default'           => 'DESC', // Default value
+        'sanitize_callback' => function ($value) {
+            $value = trim($value);
+            return $value === '' ? 'DESC' : $value;
+        }
+    ]
+);
+
+ register_setting(
+    'pagimore_settings_group',      
+    'pagimore_orderby',       
+    [
+        'default'           => 'post_date', // Default value
+        'sanitize_callback' => function ($value) {
+            $value = trim($value);
+            return $value === '' ? 'post_date' : $value;
+        }
+    ]
+);
        
 });

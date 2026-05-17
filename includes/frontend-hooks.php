@@ -358,17 +358,18 @@ $pbuilder = detect_page_builder();
 
     // Match files ending with -page404.php or -404.php
     $custom_templates404 = preg_grep( '/-(page404|404)\.php$/', $theme_templates404 );
-
-    // Build template priority
+ 
+  
+// Build template priority
     $templates = array_merge(
         $custom_templates404 ? $custom_templates404 : [],
-        [
+        [    
             '404.php',
             'notfound.php',
             'index.php',
         ]
     );
- 
+    
      
 } elseif ( $pbuilder != 'gutenberg' && $pbuilder != 'elementor' && $pbuilder != 'wpbakery' && $pbuilder != 'divi' && $ports && !$wp_query->is_404 && !is_404() && !is_single() && !is_singular('product') && !is_category() && !get_query_var('product_cat') && !get_query_var('category_name') && !get_query_var('product_tag') && !get_query_var('product_brand') && !get_query_var('tag') && !is_search()) {
     // Custom templates in the theme
@@ -401,6 +402,31 @@ function pagimore_shortcode_handle() {
 
     
 $post_type = get_option('pagimore_post_type', 'post');
+
+$order  = get_option('pagimore_order', 'DESC');
+$orderby = get_option('pagimore_orderby', 'post_date');
+
+
+// safety
+if ( ! in_array( $order, array( 'ASC', 'DESC' ), true ) ) {
+    $order = 'DESC';
+}
+
+$allowed_orderby = array(
+    'date',
+    'post_date',
+    'title',
+    'menu_order',
+    'modified',
+    'name',
+    'ID',
+    'rand',
+    'comment_count',
+);
+
+if ( ! in_array( $orderby, $allowed_orderby, true ) ) {
+    $orderby = 'date';
+}
   
 $paged = get_query_var('paged') ? get_query_var('paged') : 1;
     if (get_query_var('page')) {
@@ -413,8 +439,8 @@ $paged = get_query_var('paged') ? get_query_var('paged') : 1;
     'paged'          => $paged,
     'ignore_sticky_posts' => true,
      'post_status'         => 'publish',
-     'orderby' => 'post_date', // More specific than just 'date'
-    'order' => 'DESC',
+     'orderby' => $orderby, // More specific than just 'date'
+    'order' => $order,
     
 ];
 
@@ -504,6 +530,8 @@ if ($ports) {
 
    $sclass = esc_attr(get_option('pagimore_query_selector', 'post-list'));
 
+   $notfoundtext = esc_attr(get_option('pagimore_notfound_text', 'No posts found'));
+
     $qselect = ltrim($sclass, '.#'); // removes leading dot or hash if exists
  
 // create query for template rendering
@@ -518,9 +546,15 @@ if ( ! $blog_posts->have_posts() && !$ports) {
    // 🔍 Scan theme directory for custom 404 templates
     $theme_dir = get_stylesheet_directory();
     $theme_templates404 = scandir( $theme_dir );
-
+$page404 = get_option('pagimore_404', '/404/');
     // Match files ending with -page404.php or -404.php
     $custom_templates404 = preg_grep( '/-(page404|404)\.php$/', $theme_templates404 );
+ 
+ if($page404) { ?>
+   
+   <h2><?php echo $notfoundtext;  ?></h2>
+
+<? } else {
 
     // Build priority list: custom matches first, then fallbacks
     $templates = array_merge(
@@ -539,7 +573,7 @@ if ( ! $blog_posts->have_posts() && !$ports) {
         include $theme_404;
         exit;
     }
-    }  
+    }  }
 
     $type  = get_option('pagimore_preloader_type', 'text');
 $text  = get_option('pagimore_preloader_text', 'Loading...');
@@ -616,7 +650,30 @@ add_action('wp_enqueue_scripts', function() {
     $enable_pagination_pc = get_option('pagimore_enable_pagination_pc', 1);
     $enable_load_more_pc = get_option('pagimore_enable_load_more_pc', 1);
     
+$order  = get_option('pagimore_order', 'DESC');
+$orderby = get_option('pagimore_orderby', 'post_date');
 
+
+// safety
+if ( ! in_array( $order, array( 'ASC', 'DESC' ), true ) ) {
+    $order = 'DESC';
+}
+
+$allowed_orderby = array(
+    'date',
+    'post_date',
+    'title',
+    'menu_order',
+    'modified',
+    'name',
+    'ID',
+    'rand',
+    'comment_count',
+);
+
+if ( ! in_array( $orderby, $allowed_orderby, true ) ) {
+    $orderby = 'post_date';
+}
 
    global $pagimore_template_query_args;
 $pagimore_template_query_args = null;
@@ -637,8 +694,8 @@ $pagimore_template_query_args = null;
             'posts_per_page' => 5,
             'ignore_sticky_posts' => true, 
             'paged' => $default_paged,
-                'orderby' => 'post_date', // More specific than just 'date'
-    'order' => 'DESC',
+             'orderby' => $orderby,  
+             'order' => $order,
         ];
     }
 
@@ -833,6 +890,31 @@ $search_query = isset($_POST['s']) ? sanitize_text_field($_POST['s']) : get_quer
 
 $post_type = get_option('pagimore_post_type', 'post');
 
+$order  = get_option('pagimore_order', 'DESC');
+$orderby = get_option('pagimore_orderby', 'post_date');
+
+
+// safety
+if ( ! in_array( $order, array( 'ASC', 'DESC' ), true ) ) {
+    $order = 'DESC';
+}
+
+$allowed_orderby = array(
+    'date',
+    'post_date',
+    'title',
+    'menu_order',
+    'modified',
+    'name',
+    'ID',
+    'rand',
+    'comment_count',
+);
+
+if ( ! in_array( $orderby, $allowed_orderby, true ) ) {
+    $orderby = 'post_date';
+}
+
 if ($current_cat) {
   
 $args = [
@@ -841,8 +923,8 @@ $args = [
     'ignore_sticky_posts' => true,
     'paged'               => $paged, // use $paged directly
     'post_status'         => 'publish',
-    'orderby' => 'post_date', // More specific than just 'date'
-    'order' => 'DESC',
+    'orderby' => $orderby, // More specific than just 'date'
+    'order' => $order,
     'tax_query'           => [
         [
             'taxonomy'         => 'product_cat',
@@ -872,8 +954,8 @@ $args = [
                     'include_children' => true, 
                 ],
             ],
-            'orderby'             => 'post_date',
-            'order'               => 'DESC',
+             'orderby' => $orderby,  
+             'order' => $order,
         ];
     }
 } else if ($current_tag) {
@@ -884,8 +966,8 @@ $args = [
     'ignore_sticky_posts' => true,
     'paged'               => $paged, // pagination
     'post_status'         => 'publish',
-    'orderby'             => 'post_date',
-    'order'               => 'DESC',
+             'orderby' => $orderby,  
+             'order' => $order,
 ];
  
     $args['tax_query'] = [
@@ -905,8 +987,8 @@ $args = [
         'ignore_sticky_posts' => true,
         'paged'               => $paged,
         'post_status'         => 'publish',
-        'orderby'             => 'post_date',
-        'order'               => 'DESC',
+             'orderby' => $orderby,  
+             'order' => $order,
     ];
 } elseif ( $current_brand ) {
 
@@ -916,8 +998,8 @@ $args = [
         'ignore_sticky_posts' => true,
         'paged'               => $paged, // use $paged directly
         'post_status'         => 'publish',
-        'orderby'             => 'post_date', // More specific than just 'date'
-        'order'               => 'DESC',
+             'orderby' => $orderby,  
+             'order' => $order,
         'tax_query'           => [
             [
                 'taxonomy' => 'product_brand',
@@ -934,8 +1016,8 @@ $args = [
     'ignore_sticky_posts' => true,
     'paged'               => $paged,
     'post_status'         => 'publish',
-    'orderby'             => 'post_date',
-    'order'               => 'DESC',
+             'orderby' => $orderby,  
+             'order' => $order,
     's'                   => $search_query,
 ];
     }
@@ -947,8 +1029,8 @@ $args = [
         'ignore_sticky_posts' => true,
         'paged' => $paged, // <--- Use $paged, not max($accumulated_pages)
         'post_status' => 'publish',
-        'orderby' => 'post_date', // More specific than just 'date'
-        'order' => 'DESC',
+             'orderby' => $orderby,  
+             'order' => $order,
     ];
 }
 

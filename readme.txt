@@ -1,12 +1,11 @@
 === The Pagination and Load More ===
 
 Tested up to: 6.9
-Stable tag: 1.2.14
+Stable tag: 1.2.16
 Contributors: Sevar
-Tags: load more, load more button, ajax pagination, ajax load more
+Tags: load more, load more button, ajax load more, ajax pagination, pagination
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Live Preview: https://playground.wordpress.net/?blueprint-url=https://plugins.svn.wordpress.org/cubeb-pagination-and-load-more/assets/blueprint.json
 
 A lightweight solution The Pagination and Load More adds AJAX pagination and Load More functionality that work in sync for any post type.
 
@@ -51,7 +50,7 @@ For product brands in `get_query_var('product_brand')`: `taxonomy-product_brand-
 
 For search results, for example: `search.php`
 
-For not found 404 page: files that end on `*-page404.php`, `*-404.php` or such full names as: `404.php`, `notfound.php`. If you use some plugin to define your 404 slug then attach your 404 template mentioned above to a page and the slug of the page place into the plugin's settings.
+For not found 404 page: files that end on `*-page404.php`, `*-404.php` or such full names as: `404.php`, `notfound.php`. And also you need to make a wordpress page for that and set the slug of it in the settings of the plugin.
 
 
 Demo site: [https://evgenysudakov.ru/](https://evgenysudakov.ru/)
@@ -95,4 +94,6 @@ Demo site: [https://evgenysudakov.ru/](https://evgenysudakov.ru/)
 
 1.2.13 - Fixed odd pagination behaviour 
 
-1.2.14 - Replaced <section> by <div>
+1.2.14 - Replaced section by div
+
+1.2.16 - Added no found text and the choice of post order
