@@ -18,26 +18,31 @@ Support for this plugin is primarily provided within the WordPress.org support f
 
 How to use in theme/templates?
 
-In your /themes/ folder create another folder, if you haven’t already, “template-parts”. Create and place into this folder a file: “content-{post_type}.php”. If you want to paginate, for example, woocommerce products, then after “-” type the name of the Post Type and it would look like so: “content-product.php”. If it would be just posts then it would look like so: “content-post.php” and so on. Inside the file you need to place your loop item, for example a product card. Then on the post type page or/and category/subcategory or a tag template or product brand or search results of the same post type, where you want to have your paginated content, place the shortcode `[cubeab_code]`. Then, in the plugin’s settings you also want to select the post type and configure the rest of the settings according to your needs.
+In your `/themes/` folder, create another folder named `cubeabf-parts`. Next, create and place `content-{post_type}.php` files inside this folder. For example, if you want the page to be displayed for WooCommerce products, enter the post type name after the "-" symbol, so it looks like this: `content-product.php`. For regular posts, it will look like this: `content-post.php`, and so on. You can place multiple files for different post types there at once. Inside the file, you need to place a loop element, such as a product card. Then, place the config shortcode `[cubeabf_config]` and the pagination shortcode `[cubeabf_code]` on the desired page.
 
-The Pagination and Load More work reflects in the URL: if only the pagination is engaged then it shows only page number, like /page/4/ but if they work together with Load More button then the URL would be like /page/4/more/3/ , it means that the button Load More was clicked on the page 3 and loaded additionally one more page. The /more/ text you can easily change. IMPORTANT – after changing /more/ slug, save permalinks: In the left-hand menu, go to Settings > Permalinks. The `/more/` path segments are hidden from search index. The plugin has many free options in the settings. If you don’t need the pages’ path segments in URL you can easily disable it in the settings. You can also show only pagination or only LoadMore button or show each one based on device’s screen width.
+## Detailed Documentation
 
-## Template names you can use
+The free version includes pagination, a load more button, and infinite scroll. These can be used simultaneously or based on screen width, featuring numerous adjustable parameters that you specify directly in the config `[cubeabf_config]` and pagination `[cubeabf_code]` shortcodes. You can use this on the main shop page or home page or secondary page, category pages, brand pages, tag pages, and search result pages.
 
-For post type on the home front page: files that end on `*-page.php`, `*-template.php`, `*-home.php`, `*-post-type.php`,`*-posts.php`.
+Detailed documentation is available on the official website for "Advanced Filters for WP" filter. In this documentation, you will need the config and pagination sections. The remaining sections cover the features of the Advanced Filters for WP filter, which also includes pagination. If you only need the free version (pagination), you should look at the parameters in the config and pagination shortcode sections that do not relate to the filter. For example, in the config, you can use the `scope_exclude` or `scope_include` functions, among others, which directly affect how pagination works without a filter.
 
-For categories: `category-{$category->slug}.php`, `category-{$category->term_id}.php`, `category.php`, `archive.php`.
+## Pro Version - Advanced Filtering with Pagination
 
-For woocommerce categories: `taxonomy-product_cat-{$product_cat}.php`, `taxonomy-product_cat.php`, `archive-product.php`, `category.php`, `archive.php`.
+= Links =
 
-for post tags: `tag-{$post_tag}.php`, `tag.php`, `archive.php`, `index.php`.
+- [Advanced Filters for WP – Pro Version](https://afiltersforwp.ru/)
+- [Try the Live Demo](https://showcase.afiltersforwp.ru/shop/)
+- [Read the Documentation](https://afiltersforwp.ru/docs/)
 
-For woocommerce tags: `product-tag-{$tag->slug}.php`, `product-tag-{$tag->term_id}.php`, `taxonomy-product_tag`, `product-tag.php`, `archive-product.php`, `archive.php`.
+The flexible Advanced Filters for WP can filter almost anything on a WordPress site:
 
-For product brands in `get_query_var('product_brand')`: `taxonomy-product_brand-{$brand_slug}.php`, `taxonomy-product_brand-{$term->term_id}.php`, `taxonomy-product_brand.php`, `archive-product.php`, `archive.php`, `index.php`
-
-For not found 404 page: files that end on `*-page404.php`, `*-404.php` or such full names as: `404.php`, `notfound.php`. If you use some plugin to define your 404 slug then attach your 404 template mentioned above to a page and the slug of the page place into the plugin's settings.
-
-For search results, for example: `search.php`
-
-Demo site: [https://evgenysudakov.ru/](https://evgenysudakov.ru/)
+- Any post types, including WooCommerce products.
+- Taxonomies.
+- Custom Fields and ACF.
+- Attributes.
+- Numeric filters.
+- Ajax search.
+- Ratings.
+- Sorting.
+- Chips.
+- Pagination, load more, and infinite scroll (can be used simultaneously or based on screen width).

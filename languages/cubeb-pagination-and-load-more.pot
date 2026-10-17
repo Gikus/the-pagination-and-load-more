@@ -1,9 +1,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: The Pagination and Load More\n"
+"Project-Id-Version: Advanced Filters for WP\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-04 11:10+0000\n"
+"POT-Creation-Date: 2026-10-13 11:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -13,169 +13,88 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.8.0; wp-6.8.2; php-8.2.27\n"
+"X-Loco-Version: 2.8.9; wp-7.1.2; php-8.2.30\n"
 "X-Domain: cubeb-pagination-and-load-more"
 
-#: includes/admin-settings.php:117
-msgid "Active Color"
+#: includes/admin-settings.php:34
+msgid "(IMPORTANT!) to avoid 404 on the url reload"
+msgstr ""
+
+#: includes/admin-settings.php:53
+msgid "Additional CSS class in pagination wrapper"
 msgstr ""
 
 #. Description of the plugin
-msgid "AJAX pagination and Load More button working synchronously."
+msgid ""
+"AJAX pagination, Load More button and infinite scroll working synchronously. "
+"Multiple parameters in the shortcode."
 msgstr ""
 
-#: includes/admin-settings.php:41
-msgid "AJAX Pagination Settings"
+#: includes/admin-settings.php:42
+msgid "By default it is \"after\""
 msgstr ""
 
-#: includes/admin-settings.php:98
-msgid "By default it is \"more\""
+#: includes/admin-settings.php:89
+msgid "CSS class for dots between numbers"
 msgstr ""
 
-#: includes/admin-settings.php:112
-msgid "Change the text in the Load More button"
+#: includes/admin-settings.php:95
+msgid "CSS class for load more btn div"
 msgstr ""
 
-#: includes/admin-settings.php:105
-msgid "Change the text that appears before results are loaded"
+#: includes/admin-settings.php:101
+msgid "CSS class for loader div"
 msgstr ""
 
-#: includes/admin-settings.php:177
-msgid "Check this if you need pagination without URL change"
+#: includes/admin-settings.php:107
+msgid "CSS class for More Loader div"
 msgstr ""
 
-#: includes/admin-settings.php:167
-msgid "Check this if you want to use your own CSS styles"
+#: includes/admin-settings.php:77
+msgid "CSS class for next pagination button"
 msgstr ""
 
-#: includes/admin-settings.php:121
-msgid "Choose color for active pagination elements"
+#: includes/admin-settings.php:83
+msgid "CSS class for page number buttons"
 msgstr ""
 
-#: includes/admin-settings.php:127
-msgid "Choose color for hovered active pagination elements"
+#: includes/admin-settings.php:59
+msgid "CSS class for pagination numbers wrapper"
 msgstr ""
 
-#: includes/admin-settings.php:32
-msgid "Choose Image"
+#: includes/admin-settings.php:71
+msgid "CSS class for previous pagination button"
 msgstr ""
 
-#: includes/admin-settings.php:149
-msgid "Control pagination and Load More button visibility on mobile devices."
-msgstr ""
-
-#: includes/admin-settings.php:157
-msgid "Control pagination and Load More button visibility on PC devices."
-msgstr ""
-
-#: includes/admin-settings.php:52
-msgid "CSS selector for the loop container to paginate."
-msgstr ""
-
-#: includes/admin-settings.php:161
-msgid "Disable Default Styles"
-msgstr ""
-
-#: includes/admin-settings.php:165
-msgid "Disable plugin's default pagination styles"
-msgstr ""
-
-#: includes/admin-settings.php:175
-msgid "Disable plugin's pages update in the URL"
-msgstr ""
-
-#: includes/admin-settings.php:138
-msgid "Enable Load More Button"
-msgstr ""
-
-#: includes/admin-settings.php:131
-msgid "Enable Pagination"
+#: includes/admin-settings.php:65
+msgid "CSS main class for pagination button"
 msgstr ""
 
 #. Author of the plugin
 msgid "Evgeny Sudakoff"
 msgstr ""
 
-#: includes/admin-settings.php:123
-msgid "Hover Color"
-msgstr ""
-
-#: includes/admin-settings.php:109
-msgid "Load More Button text"
-msgstr ""
-
-#: includes/admin-settings.php:145
-msgid "Mobile Settings (Screen Width < 768px)"
-msgstr ""
-
-#: includes/admin-settings.php:89
-msgid "Next Arrow Icon"
-msgstr ""
-
-#: includes/admin-settings.php:181
-msgid "Not Found slug"
-msgstr ""
-
-#: includes/admin-settings.php:59
-msgid "Number of posts to show per page."
+#: includes/admin-settings.php:47
+msgid "Main CSS class for pagination wrapper"
 msgstr ""
 
 #: includes/admin-settings.php:31
-msgid "Or some arrow pic url here"
+msgid "Number of posts per page for product brands if you have subbrands"
 msgstr ""
 
-#: includes/admin-settings.php:153
-msgid "PC Settings (Screen Width ≥ 768px)"
-msgstr ""
-
-#: includes/admin-settings.php:184
-msgid "Place here custom 404 Not Found template page slug with slashes."
-msgstr ""
-
-#: includes/admin-settings.php:63
-msgid "Post Type to Paginate"
-msgstr ""
-
-#: includes/admin-settings.php:56
-msgid "Posts Per Page"
-msgstr ""
-
-#: includes/admin-settings.php:102
-msgid "Preloader text"
-msgstr ""
-
-#: includes/admin-settings.php:83
-msgid "Previous Arrow Icon"
-msgstr ""
-
-#: includes/admin-settings.php:49
-msgid "Query Selector (CSS)"
-msgstr ""
-
-#: includes/admin-settings.php:33
-msgid "Remove"
-msgstr ""
-
-#: includes/admin-settings.php:171
-msgid "Remove pages from URL"
-msgstr ""
-
-#: includes/admin-settings.php:79
-msgid "Select which post type should be paginated."
-msgstr ""
-
-#: includes/admin-settings.php:134
-msgid "Show pagination buttons (Previous, Next, and page numbers)."
-msgstr ""
-
-#: includes/admin-settings.php:141
-msgid "Show the \"Load More\" button."
+#: includes/admin-settings.php:8 includes/admin-settings.php:9
+#: includes/admin-settings.php:21
+msgid "Pagination Settings"
 msgstr ""
 
 #. Name of the plugin
 msgid "The Pagination and Load More"
 msgstr ""
 
-#: includes/admin-settings.php:95
+#: includes/admin-settings.php:39
 msgid "Url path segment for Load More"
+msgstr ""
+
+#: includes/admin-settings.php:113
+msgid "Текст страницы в заголовке вкладки браузера, — «Страница 3»"
 msgstr ""

@@ -1,99 +1,43 @@
 === The Pagination and Load More ===
 
-Tested up to: 7.0
-Stable tag: 1.2.17
+Tested up to: 7.1
+Stable tag: 2.0.2
 Contributors: Sevar
-Tags: load more, load more button, ajax load more, ajax pagination, pagination
+Tags: load more, infinite scroll, ajax load more, ajax pagination, pagination
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A lightweight solution The Pagination and Load More adds AJAX pagination and Load More functionality that work in sync for any post type.
+Lightweight solution AJAX pagination, Load More button, and infinite scroll that works seamlessly together or apart for any post type.
 
-== Installation ==
+== Usage. Where to place shortcodes? ==
 
-== How to install/activate it? ==
+In your `/themes/` folder, create another folder named `cubeabf-parts`. Next, create and place `content-{post_type}.php` files inside this folder. For example, if you want the page to be displayed for WooCommerce products, enter the post type name after the "-" symbol, so it looks like this: `content-product.php`. For regular posts, it will look like this: `content-post.php`, and so on. You can place multiple files for different post types there at once. Inside the file, you need to place a loop element, such as a product card. Then, place the config shortcode `[cubeabf_config]` and the pagination shortcode `[cubeabf_code]` on the desired page.
 
-WordPress Admin Method:
+== Detailed Documentation ==
 
-Go to you administration area in WordPress Plugins > Add
-Search for The Pagination and Load More
-Click on Install and activate the plugin
+The free version includes pagination, a load more button, and infinite scroll. These can be used simultaneously or based on screen width, featuring numerous adjustable parameters that you specify directly in the config `[cubeabf_config]` and pagination `[cubeabf_code]` shortcodes. You can use this on the main shop page, category pages, brand pages, tag pages, and search result pages. 
 
-FTP Method:
-
-Upload the complete backup folder to the /wp-content/plugins/ directory
-Activate the plugin through the ‘Plugins’ menu in WordPress
-
-The AJAX pagination menu will appear in the left sidebar in the Settings
-
-== Usage ==
-
-How to use in theme/templates?
- 
-In your /themes/ folder create another folder, if you haven't already, "template-parts". Create and place into this folder a file: "content-{post_type}.php". If you want to paginate, for example,  woocommerce products, then after "-" type the name of the Post Type and it would look like so: "content-product.php". If it would be just posts then it would look like so:  "content-post.php" and so on.  Inside the file you need to place your loop item, for example a product card. Then on the page of a post type or/and category/subcategory or a tag template or product brand or search results of the same post type, where you want to have your paginated content, place the shortcode `[cubeab_code]`. Then, in the plugin's settings you also want to select the post type and configure the rest of the settings according to your needs. 
-
-The Pagination and Load More work reflects in the URL: if only the pagination is engaged then it shows only page number, like `/page/4/` but if they work together with Load More button then the URL would be like `/page/4/more/3/ `, it means that the button Load More was clicked on the page 3 and loaded additionally one more page. The `/more/` text you can easily change. IMPORTANT - after changing `/more/` slug, save permalinks: In the left-hand menu, go to Settings > Permalinks. The `/more/` path segments are hidden from search index. The plugin has many free options in the settings. If you don't need the pages' path segments in URL you can easily disable it in the settings. You can also show only pagination or only LoadMore button or show each one based on device's screen width.
-
-== Template names you can use ==
-
-For a post type on the home front page: files that end on  `*-page.php`, `*-template.php`, `*-home.php`, `*-post-type.php`, `*-posts.php`.
-
-For categories: `category-{$category->slug}.php`, `category-{$category->term_id}.php`, `category.php`, `archive.php`.
-
-For woocommerce categories:  `taxonomy-product_cat-{$product_cat}.php`, `taxonomy-product_cat.php`, `archive-product.php`, `category.php`, `archive.php`.
-
-for post tags:  `tag-{$post_tag}.php`, `tag.php`, `archive.php`, `index.php`.
-
-For woocommerce tags:  `product-tag-{$tag->slug}.php`, `product-tag-{$tag->term_id}.php`, `taxonomy-product_tag`, `product-tag.php`, `archive-product.php`, `archive.php`.
-
-For product brands in `get_query_var('product_brand')`: `taxonomy-product_brand-{$brand_slug}.php`, `taxonomy-product_brand-{$term->term_id}.php`, `taxonomy-product_brand.php`, `archive-product.php`, `archive.php`, `index.php`
-
-For search results, for example: `search.php`
-
-For not found 404 page: files that end on `*-page404.php`, `*-404.php` or such full names as: `404.php`, `notfound.php`. And also you need to make a wordpress page for that and set the slug of it in the settings of the plugin.
+Detailed documentation is available on the official website for "Advanced Filters for WP" filter. In this documentation, you will need the config and pagination sections. The remaining sections cover the features of the Advanced Filters for WP filter, which also includes pagination. If you only need the free version (pagination), you should look at the parameters in the config and pagination shortcode sections that do not relate to the filter. For example, in the config, you can use the `scope_exclude` or `scope_include` functions, among others, which directly affect how pagination works without a filter.
 
 
-Demo site: [https://evgenysudakov.ru/](https://evgenysudakov.ru/)
+== Pro Version - Advanced Filtering with Pagination ==
 
+= Links =
+* [Advanced Filters for WP – Pro Version](https://afiltersforwp.ru/)
+* [Try the Live Demo](https://showcase.afiltersforwp.ru/shop/)
+* [Read the Documentation](https://afiltersforwp.ru/docs/)
 
-== Changelog: ==
+The flexible Advanced Filters for WP can filter almost anything on a WordPress site:
 
-1.0.0 - Initial upload
+* Any post types, including WooCommerce products.
+* Taxonomies.
+* Custom Fields and ACF.
+* Attributes.
+* Numeric filters.
+* Ajax search.
+* Ratings.
+* Sorting.
+* Chips.
+* Pagination, load more, and infinite scroll (can be used simultaneously or based on screen width).
 
-1.1.5 - Noindex /more/ and dynamic container fix
-
-1.1.6 - Not found 404 fix and other minor fixes
-
-1.1.7 - Small fix
- 
-1.1.8 - Small fix published posts only
-
-1.2.0 - Many fixes, added support for product brands
-
-1.2.1 - Small fix
-
-1.2.2 - Category template fix
-
-1.2.3 - Var $categ_base is not exist fix
-
-1.2.4 - Template choice fix
-
-1.2.5 - Template choice fix ultimate
-
-1.2.6 - Shortcode inside page builder fix
-
-1.2.7 - Fixed possible error on single product page
-
-1.2.8 - Small fix
-
-1.2.10 - Search results support
-
-1.2.11 - Changed posts loading style and added gif option for preloader
-
-1.2.12 - An error message fixed
-
-1.2.13 - Fixed odd pagination behaviour 
-
-1.2.14 - Replaced section by div
-
-1.2.16 - Added no found text and the choice of post order
+The filter offers a vast number of features, such as automatic visual color display in both the filter and the chips. Numeric filters display real values. You can have a filter on taxonomy pages where it will filter only by the posts of that specific taxonomy. In the client admin dashboard, you can display only the settings you need. It supports any inserts in the form of images, bg or HTML to the filter items. It also features SSR loading via a filtered link. Position everything exactly how you need it, and much, much more. Almost all interactions with filters and pagination happen directly within the shortcodes.

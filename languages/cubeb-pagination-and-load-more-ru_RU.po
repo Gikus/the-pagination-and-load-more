@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Cubeab Pagination and Load More\n"
+"Project-Id-Version: Advanced Filters for WP\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-28 03:33+0000\n"
-"PO-Revision-Date: 2025-09-04 11:06+0000\n"
+"POT-Creation-Date: 2026-10-04 12:26+0000\n"
+"PO-Revision-Date: 2026-10-13 11:12+0000\n"
 "Last-Translator: \n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -13,174 +13,94 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.8.0; wp-6.8.2; php-8.2.27\n"
+"X-Loco-Version: 2.8.9; wp-7.1.2; php-8.2.30\n"
 "X-Domain: cubeb-pagination-and-load-more"
 
-#: includes/admin-settings.php:117
-msgid "Active Color"
-msgstr "Цвет активного элемента"
+#: includes/admin-settings.php:34
+msgid "(IMPORTANT!) to avoid 404 on the url reload"
+msgstr "(Важно!) во избежание ответа 404 при перезагрузке URL"
+
+#: includes/admin-settings.php:53
+msgid "Additional CSS class in pagination wrapper"
+msgstr "Дополнительный класс обертки пагинации"
 
 #. Description of the plugin
-msgid "AJAX pagination and Load More button working synchronously."
-msgstr "AJAX пагинация и кнопка Загрузить Ещё работают синхронно."
-
-#: includes/admin-settings.php:41
-msgid "AJAX Pagination Settings"
-msgstr "Настройки AJAX пагинации"
-
-#: includes/admin-settings.php:98
-msgid "By default it is \"more\""
-msgstr "По умолчанию \"more\""
-
-#: includes/admin-settings.php:112
-msgid "Change the text in the Load More button"
-msgstr "Измените текст на кнопке «Загрузить еще»"
-
-#: includes/admin-settings.php:105
-msgid "Change the text that appears before results are loaded"
-msgstr "Измените текст, который появляется перед загрузкой результатов."
-
-#: includes/admin-settings.php:177
-msgid "Check this if you need pagination without URL change"
-msgstr "Отметьте это, если вам нужна пагинация без изменения URL."
-
-#: includes/admin-settings.php:167
-msgid "Check this if you want to use your own CSS styles"
-msgstr "Отметьте это, если вы хотите использовать собственные стили CSS."
-
-#: includes/admin-settings.php:121
-msgid "Choose color for active pagination elements"
-msgstr "Выберите цвет для активных элементов пагинации"
-
-#: includes/admin-settings.php:127
-msgid "Choose color for hovered active pagination elements"
-msgstr "Выберите цвет для активных элементов пагинации при наведении курсора"
-
-#: includes/admin-settings.php:32
-msgid "Choose Image"
-msgstr "Выбрать изображение"
-
-#: includes/admin-settings.php:149
-msgid "Control pagination and Load More button visibility on mobile devices."
+msgid ""
+"AJAX pagination, Load More button and infinite scroll working synchronously. "
+"Multiple parameters in the shortcode."
 msgstr ""
-"Управление видимостью пагинации и кнопки «Загрузить еще» на мобильных "
-"устройствах."
+"AJAX-пагинация, кнопка «Загрузить еще» и бесконечная прокрутка работают "
+"синхронно. Поддержка множества параметров в шорткоде."
 
-#: includes/admin-settings.php:157
-msgid "Control pagination and Load More button visibility on PC devices."
+#: includes/admin-settings.php:42
+msgid "By default it is \"after\""
+msgstr "По умолчанию \"after\""
+
+#: includes/admin-settings.php:89
+msgid "CSS class for dots between numbers"
+msgstr "Класс CSS для точек между цифрами"
+
+#: includes/admin-settings.php:95
+msgid "CSS class for load more btn div"
+msgstr "Класс CSS для кнопки - Загрузить Ещё"
+
+#: includes/admin-settings.php:101
+msgid "CSS class for loader div"
 msgstr ""
-"Управление видимостью пагинации и кнопки «Загрузить еще» на компьютерах."
+"Класс CSS для прелодера появляющийся при клике по контроллерам пагинации"
 
-#: includes/admin-settings.php:52
-msgid "CSS selector for the loop container to paginate."
-msgstr "CSS-селектор для контейнера цикла для пагинации."
+#: includes/admin-settings.php:107
+msgid "CSS class for More Loader div"
+msgstr "Класс CSS для прелодера для кнопки - Загрузить Ещё"
 
-#: includes/admin-settings.php:161
-msgid "Disable Default Styles"
-msgstr "Отключить стили по умолчанию"
+#: includes/admin-settings.php:77
+msgid "CSS class for next pagination button"
+msgstr "Класс CSS для кнопки След. в пагинации"
 
-#: includes/admin-settings.php:165
-msgid "Disable plugin's default pagination styles"
-msgstr "Отключить стили пагинации плагина по умолчанию"
+#: includes/admin-settings.php:83
+msgid "CSS class for page number buttons"
+msgstr "Класс CSS для кнопок с числами в пагинации"
 
-#: includes/admin-settings.php:175
-msgid "Disable plugin's pages update in the URL"
-msgstr "Отключить обновление страниц плагина в URL"
+#: includes/admin-settings.php:59
+msgid "CSS class for pagination numbers wrapper"
+msgstr "Класс CSS для обертки чисел в пагинации"
 
-#: includes/admin-settings.php:138
-msgid "Enable Load More Button"
-msgstr "Включить кнопку «Загрузить еще»"
+#: includes/admin-settings.php:71
+msgid "CSS class for previous pagination button"
+msgstr "Класс CSS для Пред. кнопки в пагинации"
 
-#: includes/admin-settings.php:131
-msgid "Enable Pagination"
-msgstr "Включить пагинацию"
+#: includes/admin-settings.php:65
+msgid "CSS main class for pagination button"
+msgstr "Главный класс CSS для кнопок в пагинации"
 
 #. Author of the plugin
 msgid "Evgeny Sudakoff"
 msgstr "Евгений Судаков"
 
-#: includes/admin-settings.php:123
-msgid "Hover Color"
-msgstr "Цвет при наведении"
-
-#: includes/admin-settings.php:109
-msgid "Load More Button text"
-msgstr "Текст кнопки «Загрузить еще»"
-
-#: includes/admin-settings.php:145
-msgid "Mobile Settings (Screen Width < 768px)"
-msgstr "Настройки мобильного устройства (ширина экрана < 768 пикселей)"
-
-#: includes/admin-settings.php:89
-msgid "Next Arrow Icon"
-msgstr "Значок стрелки «Далее»"
-
-#: includes/admin-settings.php:181
-msgid "Not Found slug"
-msgstr "Слаг страницы ошибки 404"
-
-#: includes/admin-settings.php:59
-msgid "Number of posts to show per page."
-msgstr "Количество постов для отображения на странице."
+#: includes/admin-settings.php:47
+msgid "Main CSS class for pagination wrapper"
+msgstr "Главный класс CSS для обертки пагинации"
 
 #: includes/admin-settings.php:31
-msgid "Or some arrow pic url here"
-msgstr "Или ссылка на картинку со стрелкой"
-
-#: includes/admin-settings.php:153
-msgid "PC Settings (Screen Width ≥ 768px)"
-msgstr "Настройки ПК (ширина экрана ≥ 768 пикселей)"
-
-#: includes/admin-settings.php:184
-msgid "Place here custom 404 Not Found template page slug with slashes."
+msgid "Number of posts per page for product brands if you have subbrands"
 msgstr ""
-"Поместите здесь пользовательский шаблон страницы 404 Not Found со слешами."
+"Число постов/товаров на страницу для ПОДБРЕНДОВ, если они у вас есть. "
+"Логичнее ставить ту же цифру что и у вас в шорткоде пагинации на странице "
+"брендов."
 
-#: includes/admin-settings.php:63
-msgid "Post Type to Paginate"
-msgstr "Тип записи для пагинации"
-
-#: includes/admin-settings.php:56
-msgid "Posts Per Page"
-msgstr "Записей на странице"
-
-#: includes/admin-settings.php:102
-msgid "Preloader text"
-msgstr "Текст прелодера (Перед загрузкой постов)"
-
-#: includes/admin-settings.php:83
-msgid "Previous Arrow Icon"
-msgstr "Значок стрелки «Предыдущие»"
-
-#: includes/admin-settings.php:49
-msgid "Query Selector (CSS)"
-msgstr "Селектор запросов CSS (Query Selector)"
-
-#: includes/admin-settings.php:33
-msgid "Remove"
-msgstr "Удалить"
-
-#: includes/admin-settings.php:171
-msgid "Remove pages from URL"
-msgstr "Удалить страницы из URL"
-
-#: includes/admin-settings.php:79
-msgid "Select which post type should be paginated."
-msgstr "Выберите, какой тип записи следует разбить на страницы."
-
-#: includes/admin-settings.php:134
-msgid "Show pagination buttons (Previous, Next, and page numbers)."
-msgstr ""
-"Показывать кнопки пагинации («Предыдущая», «Следующая» и номера страниц)."
-
-#: includes/admin-settings.php:141
-msgid "Show the \"Load More\" button."
-msgstr "Показать кнопку «Загрузить еще»."
+#: includes/admin-settings.php:8 includes/admin-settings.php:9
+#: includes/admin-settings.php:21
+msgid "Pagination Settings"
+msgstr "Настройки пагинации"
 
 #. Name of the plugin
 msgid "The Pagination and Load More"
 msgstr ""
 
-#: includes/admin-settings.php:95
+#: includes/admin-settings.php:39
 msgid "Url path segment for Load More"
-msgstr "URL сегмент для «Загрузить Еще»"
+msgstr "Сегмент пути URL отражающий работу кнопки подгрузки и инфинит-скролла"
+
+#: includes/admin-settings.php:113
+msgid "Текст страницы в заголовке вкладки браузера, — «Страница 3»"
+msgstr ""

@@ -1,0 +1,131 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Advanced Filters for WP\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-13 11:05+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.8.9; wp-7.1.2; php-8.2.30\n"
+"X-Domain: cubeb-pagination-and-load-more"
+
+#: includes/admin-settings.php:273
+msgid "(IMPORTANT!) to avoid 404 on the url reload"
+msgstr ""
+
+#: includes/admin-settings.php:297
+msgid "Additional CSS class in pagination wrapper"
+msgstr ""
+
+#. Description of the plugin
+msgid ""
+"AJAX pagination, Load More button and infinite scroll working synchronously. "
+"Multiple parameters in the shortcode."
+msgstr ""
+
+#. Name of the plugin
+msgid "Advanced Filters for WP"
+msgstr ""
+
+#: includes/admin-settings.php:24
+msgid "Advanced Filters for WP - License management"
+msgstr ""
+
+#: includes/admin-settings.php:8
+msgid "Advanced Filters for WP License"
+msgstr ""
+
+#: includes/admin-settings.php:247 includes/admin-settings.php:260
+msgid "Advanced Filters for WP Settings"
+msgstr ""
+
+#: includes/admin-settings.php:9
+msgid "Afilters License"
+msgstr ""
+
+#: includes/admin-settings.php:248
+msgid "Afilters Settings"
+msgstr ""
+
+#: includes/admin-settings.php:286
+msgid "By default it is \"after\""
+msgstr ""
+
+#: includes/admin-settings.php:333
+msgid "CSS class for dots between numbers"
+msgstr ""
+
+#: includes/admin-settings.php:339
+msgid "CSS class for load more btn div"
+msgstr ""
+
+#: includes/admin-settings.php:345
+msgid "CSS class for loader div"
+msgstr ""
+
+#: includes/admin-settings.php:351
+msgid "CSS class for More Loader div"
+msgstr ""
+
+#: includes/admin-settings.php:321
+msgid "CSS class for next pagination button"
+msgstr ""
+
+#: includes/admin-settings.php:327
+msgid "CSS class for page number buttons"
+msgstr ""
+
+#: includes/admin-settings.php:303
+msgid "CSS class for pagination numbers wrapper"
+msgstr ""
+
+#: includes/admin-settings.php:315
+msgid "CSS class for previous pagination button"
+msgstr ""
+
+#: includes/admin-settings.php:309
+msgid "CSS main class for pagination button"
+msgstr ""
+
+#: includes/admin-settings.php:52
+msgid "Enter your unique license key here"
+msgstr ""
+
+#. Author of the plugin
+msgid "Evgeny Sudakoff"
+msgstr ""
+
+#: includes/admin-settings.php:60
+msgid "Hide"
+msgstr ""
+
+#: includes/admin-settings.php:32
+msgid "License key"
+msgstr ""
+
+#: includes/admin-settings.php:291
+msgid "Main CSS class for pagination wrapper"
+msgstr ""
+
+#: includes/admin-settings.php:270
+msgid "Number of posts per page for product brands if you have subbrands"
+msgstr ""
+
+#: includes/admin-settings.php:49 includes/admin-settings.php:63
+msgid "Show"
+msgstr ""
+
+#: includes/admin-settings.php:283
+msgid "Url path segment for Load More"
+msgstr ""
+
+#: includes/admin-settings.php:277
+msgid "Url segment of the 404 page"
+msgstr ""

@@ -1,0 +1,137 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Advanced Filters for WP\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-04 12:26+0000\n"
+"PO-Revision-Date: 2026-10-13 11:06+0000\n"
+"Last-Translator: \n"
+"Language-Team: Русский\n"
+"Language: ru_RU\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10 >= 2 && "
+"n%10<=4 &&(n%100<10||n%100 >= 20)? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.8.9; wp-7.1.2; php-8.2.30\n"
+"X-Domain: cubeb-pagination-and-load-more"
+
+#: includes/admin-settings.php:273
+msgid "(IMPORTANT!) to avoid 404 on the url reload"
+msgstr "(Важно!) во избежание ответа 404 при перезагрузке URL"
+
+#: includes/admin-settings.php:297
+msgid "Additional CSS class in pagination wrapper"
+msgstr "Дополнительный класс обертки пагинации"
+
+#. Name of the plugin
+msgid "Advanced Filters for WP"
+msgstr ""
+
+#: includes/admin-settings.php:24
+msgid "Advanced Filters for WP - License management"
+msgstr "Advanced Filters for WP - Управление лицензией"
+
+#: includes/admin-settings.php:8
+msgid "Advanced Filters for WP License"
+msgstr "Advanced Filters for WP - Лицензия"
+
+#: includes/admin-settings.php:247 includes/admin-settings.php:260
+msgid "Advanced Filters for WP Settings"
+msgstr "Advanced Filters for WP - Настройки"
+
+#: includes/admin-settings.php:9
+msgid "Afilters License"
+msgstr "Afilters Лицензия"
+
+#: includes/admin-settings.php:248
+msgid "Afilters Settings"
+msgstr "Afilters Настройки"
+
+#. Description of the plugin
+msgid ""
+"AJAX pagination, Load More button and infinite scroll working synchronously. "
+"Multiple parameters in the shortcode."
+msgstr ""
+"AJAX-пагинация, кнопка «Загрузить еще» и бесконечная прокрутка работают "
+"синхронно. Поддержка множества параметров в шорткоде."
+
+#: includes/admin-settings.php:286
+msgid "By default it is \"after\""
+msgstr "По умолчанию \"after\""
+
+#: includes/admin-settings.php:333
+msgid "CSS class for dots between numbers"
+msgstr "Класс CSS для точек между цифрами"
+
+#: includes/admin-settings.php:339
+msgid "CSS class for load more btn div"
+msgstr "Класс CSS для кнопки - Загрузить Ещё"
+
+#: includes/admin-settings.php:345
+msgid "CSS class for loader div"
+msgstr ""
+"Класс CSS для прелодера появляющийся при клике по контроллерам пагинации"
+
+#: includes/admin-settings.php:351
+msgid "CSS class for More Loader div"
+msgstr "Класс CSS для прелодера для кнопки - Загрузить Ещё"
+
+#: includes/admin-settings.php:321
+msgid "CSS class for next pagination button"
+msgstr "Класс CSS для кнопки След. в пагинации"
+
+#: includes/admin-settings.php:327
+msgid "CSS class for page number buttons"
+msgstr "Класс CSS для кнопок с числами в пагинации"
+
+#: includes/admin-settings.php:303
+msgid "CSS class for pagination numbers wrapper"
+msgstr "Класс CSS для обертки чисел в пагинации"
+
+#: includes/admin-settings.php:315
+msgid "CSS class for previous pagination button"
+msgstr "Класс CSS для Пред. кнопки в пагинации"
+
+#: includes/admin-settings.php:309
+msgid "CSS main class for pagination button"
+msgstr "Главный класс CSS для кнопок в пагинации"
+
+#: includes/admin-settings.php:52
+msgid "Enter your unique license key here"
+msgstr "Вставьте сюда свой уникальный лицензионный ключ"
+
+#. Author of the plugin
+msgid "Evgeny Sudakoff"
+msgstr "Евгений Судаков"
+
+#: includes/admin-settings.php:60
+msgid "Hide"
+msgstr "Спратать"
+
+#: includes/admin-settings.php:32
+msgid "License key"
+msgstr "Лицензионный ключ"
+
+#: includes/admin-settings.php:291
+msgid "Main CSS class for pagination wrapper"
+msgstr "Главный класс CSS для обертки пагинации"
+
+#: includes/admin-settings.php:270
+msgid "Number of posts per page for product brands if you have subbrands"
+msgstr ""
+"Число постов/товаров на страницу для ПОДБРЕНДОВ, если они у вас есть. "
+"Логичнее ставить ту же цифру что и у вас в шорткоде пагинации на странице "
+"брендов."
+
+#: includes/admin-settings.php:49 includes/admin-settings.php:63
+msgid "Show"
+msgstr "Показать"
+
+#: includes/admin-settings.php:283
+msgid "Url path segment for Load More"
+msgstr "Сегмент пути URL отражающий работу кнопки подгрузки и инфинит-скролла"
+
+#: includes/admin-settings.php:277
+msgid "Url segment of the 404 page"
+msgstr "Слег страницы 404"

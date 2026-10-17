@@ -1,257 +1,122 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 // File: admin-settings.php
-// Add media uploader support
-add_action('admin_enqueue_scripts', function($hook) {
-    if ($hook === 'settings_page_ajax-pagination-settings') {
-        wp_enqueue_media();
-        wp_enqueue_style('wp-color-picker');
-        wp_enqueue_script('wp-color-picker');
-        wp_enqueue_script('pagimore-arrow-uploader', plugins_url('/assets/arrow-uploader.js', CUBEPAGI_PLUGIN_FILE), ['jquery'], CUBEPAGI_VERSION, true);
-    }
-});
+
 
 add_action('admin_menu', function() {
     add_options_page(
-        'AJAX Pagination Settings',
-        'AJAX Pagination',
+        esc_html__('Pagination Settings', 'cubeb-pagination-and-load-more'),
+        esc_html__('Pagination Settings', 'cubeb-pagination-and-load-more'),
         'manage_options',
-        'ajax-pagination-settings',
-        'pagimore_render_settings_page'
+        'pagination-settings',
+        'cubeabf_render_settings_page'
     );
 });
 
-// Arrow icon field render function
-function pagimore_arrow_icon_field($args) {
-    $option = $args['option_name'];
-    $icon_url = get_option($option);
-    ?>
-    <div>
-        <img id="<?php echo esc_html($option); ?>-preview" src="<?php echo esc_url($icon_url); ?>" style="max-width:50px; <?php echo esc_url($icon_url) ? '' : 'display:none;'; ?>">
-        <input type="text" id="<?php echo esc_html($option); ?>-input" name="<?php echo esc_html($option); ?>" value="<?php echo esc_url($icon_url); ?>" style="width:70%;" placeholder="<?php echo esc_attr__( 'Or some arrow pic url here', 'cubeb-pagination-and-load-more' ); ?>">
-        <button type="button" class="button pagimore-arrow-upload" data-target="<?php echo esc_html($option); ?>"><?php echo esc_html__('Choose Image', 'cubeb-pagination-and-load-more'); ?></button>
-        <button type="button" class="button pagimore-arrow-remove" data-target="<?php echo esc_html($option); ?>" <?php echo esc_url($icon_url) ? '' : 'style="display:none;"'; ?>><?php echo esc_html__('Remove', 'cubeb-pagination-and-load-more'); ?></button>
-    </div>
-    <?php
-}
+ 
 
-// Preloader icon field render function
-function pagimore_preloader_icon_field($args) {
-    $option = $args['option_name'];
-    $preloader_url = get_option($option);
-    ?>
-    <div>
-        <img id="<?php echo esc_html($option); ?>-preview" src="<?php echo esc_url($preloader_url); ?>" style="max-width:50px; <?php echo esc_url($preloader_url) ? '' : 'display:none;'; ?>">
-        <input type="text" id="<?php echo esc_html($option); ?>-input" name="<?php echo esc_html($option); ?>" value="<?php echo esc_url($preloader_url); ?>" style="width:70%;" placeholder="<?php echo esc_attr__( 'Or some preloader gif url here', 'cubeb-pagination-and-load-more' ); ?>">
-        <button type="button" class="button pagimore-gif-upload" data-target="<?php echo esc_html($option); ?>"><?php echo esc_html__('Choose Image', 'cubeb-pagination-and-load-more'); ?></button>
-        <button type="button" class="button pagimore-gif-remove" data-target="<?php echo esc_html($option); ?>" <?php echo esc_url($preloader_url) ? '' : 'style="display:none;"'; ?>><?php echo esc_html__('Remove', 'cubeb-pagination-and-load-more'); ?></button>
-    </div>
-    <?php
-}
-
-function pagimore_render_settings_page() {
+function cubeabf_render_settings_page() {
     ?>
     <div class="wrap">
-        <h1><?php echo esc_html__('AJAX Pagination Settings', 'cubeb-pagination-and-load-more'); ?></h1>
+        <h1><?php echo esc_html__('Pagination Settings', 'cubeb-pagination-and-load-more'); ?></h1>
         <form method="post" action="options.php">
             <?php
-            settings_fields('pagimore_settings_group');
-            do_settings_sections('pagimore_settings_group');
+            settings_fields('cubeabf_settings_group');
+            do_settings_sections('cubeabf_settings_group');
             ?>
             <table class="form-table">
-                <tr valign="top">
-                    <th scope="row"><?php echo esc_html__('Query Selector (CSS class)', 'cubeb-pagination-and-load-more'); ?></th>
-                    <td>
-                        <input type="text" name="pagimore_query_selector" value="<?php echo esc_attr(get_option('pagimore_query_selector', 'post-list')); ?>" style="width: 300px;">
-                        <p class="description"><?php echo esc_html__('CSS selector for the loop container to paginate.', 'cubeb-pagination-and-load-more'); ?></p>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?php echo esc_html__('Posts Per Page', 'cubeb-pagination-and-load-more'); ?></th>
-                    <td>
-                        <input type="number" name="pagimore_post_per_page" min="1" value="<?php echo esc_attr(get_option('pagimore_post_per_page', 5)); ?>" style="width: 80px;">
-                        <p class="description"><?php echo esc_html__('Number of posts to show per page.', 'cubeb-pagination-and-load-more'); ?></p>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?php echo esc_html__('Post Type to Paginate', 'cubeb-pagination-and-load-more'); ?></th>
-                    <td>
-                        <?php
-                        $selected = get_option('pagimore_post_type', 'post');
-                        $post_types = get_post_types(['public' => true], 'objects');
-                        echo '<select name="pagimore_post_type">';
-                        foreach ($post_types as $slug => $pt) {
-                            printf(
-                                '<option value="%s" %s>%s</option>',
-                                esc_attr($slug),
-                                selected($selected, $slug, false),
-                                esc_html($pt->labels->singular_name)
-                            );
-                        }
-                        echo '</select>';
-                        ?>
-                        <p class="description"><?php echo esc_html__('Select which post type should be paginated.', 'cubeb-pagination-and-load-more'); ?></p>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?php echo esc_html__('Previous Arrow Icon', 'cubeb-pagination-and-load-more'); ?></th>
-                    <td>
-                        <?php pagimore_arrow_icon_field(['option_name' => 'pagimore_prev_arrow_icon']); ?>
-                    </td>
-                </tr>
-                <tr valign="top">
-                    <th scope="row"><?php echo esc_html__('Next Arrow Icon', 'cubeb-pagination-and-load-more'); ?></th>
-                    <td>
-                        <?php pagimore_arrow_icon_field(['option_name' => 'pagimore_next_arrow_icon']); ?>
-                    </td>
-                </tr>
                  
+              
+                 <tr valign="top">
+                    <th scope="row"><?php echo esc_html__('Number of posts per page for product brands if you have subbrands', 'cubeb-pagination-and-load-more'); ?></th>
+                    <td>
+                        <input type="text" name="cubeabf_subbrands_ppp" value="<?php echo esc_attr(get_option('cubeabf_subbrands_ppp', '6')); ?>" style="width: 300px;">
+                     <p class="description"><?php echo esc_html__('(IMPORTANT!) to avoid 404 on the url reload', 'cubeb-pagination-and-load-more'); ?></p>
+                    </td>
+                </tr>
+                
                 <tr valign="top">
                     <th scope="row"><?php echo esc_html__('Url path segment for Load More', 'cubeb-pagination-and-load-more'); ?></th>
                     <td>
-                        <input type="text" name="pagimore_more_url_param" value="<?php echo esc_attr(get_option('pagimore_more_url_param', 'more')); ?>" style="width: 300px;">
-                        <p class="description"><?php echo esc_html__('By default it is "more"', 'cubeb-pagination-and-load-more'); ?></p>
-                    </td>
-                </tr>
-                <tr valign="top">
-    <th scope="row"><?php echo esc_html__('Preloader type', 'cubeb-pagination-and-load-more'); ?></th>
-    <td>
-        <?php $type = get_option('pagimore_preloader_type', 'text'); ?>
-
-        <label>
-            <input type="radio" name="pagimore_preloader_type"
-                   value="text" <?php checked($type, 'text'); ?>>
-            <?php echo __('Use text', 'cubeb-pagination-and-load-more'); ?>
-        </label>
-        <br>
-
-        <label>
-            <input type="radio" name="pagimore_preloader_type"
-                   value="gif" <?php checked($type, 'gif'); ?>>
-            <?php echo __('Use GIF icon', 'cubeb-pagination-and-load-more'); ?>
-        </label>
-    </td>
-</tr>
-
-                <tr valign="top">
-                    <th scope="row"><?php echo esc_html__('Preloader text', 'cubeb-pagination-and-load-more'); ?></th>
-                    <td>
-                        <input type="text" name="pagimore_preloader_text" value="<?php echo esc_attr(get_option('pagimore_preloader_text', 'Loading...')); ?>" style="width: 300px;">
-                        <p class="description"><?php echo esc_html__('Change the text that appears before results are loaded', 'cubeb-pagination-and-load-more'); ?></p>
-                    </td>
-                </tr>
-                 <tr valign="top">
-                    <th scope="row"><?php echo esc_html__('Preloader gif', 'cubeb-pagination-and-load-more'); ?></th>
-                    <td>
-                        <?php pagimore_preloader_icon_field(['option_name' => 'pagimore_gif_icon']); ?>
-                    </td>
-                </tr>
-                 <tr valign="top">
-                    <th scope="row"><?php echo esc_html__('Load More Button text', 'cubeb-pagination-and-load-more'); ?></th>
-                    <td>
-                        <input type="text" name="pagimore_load_more_text" value="<?php echo esc_attr(get_option('pagimore_load_more_text', 'Load More')); ?>" style="width: 300px;">
-                        <p class="description"><?php echo esc_html__('Change the text in the Load More button', 'cubeb-pagination-and-load-more'); ?></p>
+                        <input type="text" name="cubeabf_more_url_param" value="<?php echo esc_attr(get_option('cubeabf_more_url_param', 'after')); ?>" style="width: 300px;">
+                        <p class="description"><?php echo esc_html__('By default it is "after"', 'cubeb-pagination-and-load-more'); ?></p>
                     </td>
                 </tr>
                  
                 <tr valign="top">
-    <th scope="row"><?php echo esc_html__('Active Color', 'cubeb-pagination-and-load-more'); ?></th>
-    <td>
-        <input type="text" name="pagimore_pagi_active_color" class="pagi-color-picker" 
-               value="<?php echo esc_attr(get_option('pagimore_pagi_active_color', '#0073aa')); ?>">
-        <p class="description"><?php echo esc_html__('Choose color for active pagination elements', 'cubeb-pagination-and-load-more'); ?></p>
-    <tr valign="top">
-    <th scope="row"><?php echo esc_html__('Hover Color', 'cubeb-pagination-and-load-more'); ?></th>
-    <td>
-        <input type="text" name="pagimore_pagi_hover_active_color" class="pagi-color-picker" 
-               value="<?php echo esc_attr(get_option('pagimore_pagi_hover_active_color', '#005177')); ?>">
-        <p class="description"><?php echo esc_html__('Choose color for hovered active pagination elements', 'cubeb-pagination-and-load-more'); ?></p>
-    </td>
-</tr>
-                <tr valign="top">
-                    <th scope="row"><?php echo esc_html__('Enable Pagination', 'cubeb-pagination-and-load-more'); ?></th>
+                    <th scope="row"><?php echo esc_html__('Main CSS class for pagination wrapper', 'cubeb-pagination-and-load-more'); ?></th>
                     <td>
-                        <label><input type="checkbox" name="pagimore_enable_pagination" <?php checked(get_option('pagimore_enable_pagination', 1)); ?> value="1"> Enable Pagination (All Devices)</label>
-                        <p class="description"><?php echo esc_html__('Show pagination buttons (Previous, Next, and page numbers).', 'cubeb-pagination-and-load-more'); ?></p>
+                        <input type="text" name="cubeabf_wrapper_css" value="<?php echo esc_attr(get_option('cubeabf_wrapper_css', 'ajax-pagination')); ?>" style="width: 300px;">
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php echo esc_html__('Enable Load More Button', 'cubeb-pagination-and-load-more'); ?></th>
+                    <th scope="row"><?php echo esc_html__('Additional CSS class in pagination wrapper', 'cubeb-pagination-and-load-more'); ?></th>
                     <td>
-                        <label><input type="checkbox" name="pagimore_enable_load_more" <?php checked(get_option('pagimore_enable_load_more', 1)); ?> value="1"> Enable Load More Button (All Devices)</label>
-                        <p class="description"><?php echo esc_html__('Show the "Load More" button.', 'cubeb-pagination-and-load-more'); ?></p>
+                        <input type="text" name="cubeabf_add_wrapper_css" value="<?php echo esc_attr(get_option('cubeabf_add_wrapper_css', 'product-pagi')); ?>" style="width: 300px;">
+                    </td>
+                </tr>
+                 <tr valign="top">
+                    <th scope="row"><?php echo esc_html__('CSS class for pagination numbers wrapper', 'cubeb-pagination-and-load-more'); ?></th>
+                    <td>
+                        <input type="text" name="cubeabf_wrapper_numbers_css" value="<?php echo esc_attr(get_option('cubeabf_wrapper_numbers_css', 'product-pagi__wrapper')); ?>" style="width: 300px;">
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php echo esc_html__('Mobile Settings (Screen Width < 768px)', 'cubeb-pagination-and-load-more'); ?></th>
+                    <th scope="row"><?php echo esc_html__('CSS main class for pagination button', 'cubeb-pagination-and-load-more'); ?></th>
                     <td>
-                        <label><input type="checkbox" name="pagimore_enable_pagination_mobile" <?php checked(get_option('pagimore_enable_pagination_mobile', 1)); ?> value="1"> Enable Pagination on Mobile</label><br>
-                        <label><input type="checkbox" name="pagimore_enable_load_more_mobile" <?php checked(get_option('pagimore_enable_load_more_mobile', 1)); ?> value="1"> Enable Load More Button on Mobile</label>
-                        <p class="description"><?php echo esc_html__('Control pagination and Load More button visibility on mobile devices.', 'cubeb-pagination-and-load-more'); ?></p>
+                        <input type="text" name="cubeabf_pagi_btn_css" value="<?php echo esc_attr(get_option('cubeabf_pagi_btn_css', 'pagination-btn')); ?>" style="width: 300px;">
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row"><?php echo esc_html__('PC Settings (Screen Width ≥ 768px)', 'cubeb-pagination-and-load-more'); ?></th>
+                    <th scope="row"><?php echo esc_html__('CSS class for previous pagination button', 'cubeb-pagination-and-load-more'); ?></th>
                     <td>
-                        <label><input type="checkbox" name="pagimore_enable_pagination_pc" <?php checked(get_option('pagimore_enable_pagination_pc', 1)); ?> value="1"> Enable Pagination on PC</label><br>
-                        <label><input type="checkbox" name="pagimore_enable_load_more_pc" <?php checked(get_option('pagimore_enable_load_more_pc', 1)); ?> value="1"> Enable Load More Button on PC</label>
-                        <p class="description"><?php echo esc_html__('Control pagination and Load More button visibility on PC devices.', 'cubeb-pagination-and-load-more'); ?></p>
+                        <input type="text" name="cubeabf_pagi_prev_btn_css" value="<?php echo esc_attr(get_option('cubeabf_pagi_prev_btn_css', 'product-pagi__prev')); ?>" style="width: 300px;">
                     </td>
                 </tr>
                 <tr valign="top">
-    <th scope="row"><?php echo esc_html__('Disable Default Styles', 'cubeb-pagination-and-load-more'); ?></th>
-    <td>
-        <label>
-            <input type="checkbox" name="pagimore_disable_styles" <?php checked(get_option('pagimore_disable_styles', 0)); ?> value="1">
-            <?php echo esc_html__("Disable plugin's default pagination styles", 'cubeb-pagination-and-load-more'); ?>
-        </label>
-        <p class="description"><?php echo esc_html__('Check this if you want to use your own CSS styles', 'cubeb-pagination-and-load-more'); ?></p>
-    </td>
-</tr>
-  <tr valign="top">
-    <th scope="row"><?php echo esc_html__('Remove pages from URL', 'cubeb-pagination-and-load-more'); ?></th>
-    <td>
-        <label>
-            <input type="checkbox" name="pagimore_remove_pages" <?php checked(get_option('pagimore_remove_pages', 0)); ?> value="1">
-            <?php echo esc_html__("Disable plugin's pages update in the URL", 'cubeb-pagination-and-load-more'); ?>
-        </label>
-        <p class="description"><?php echo esc_html__('Check this if you need pagination without URL change', 'cubeb-pagination-and-load-more'); ?></p>
-    </td>
-</tr>
-
- <tr valign="top">
-                    <th scope="row"><?php echo esc_html__('Url segment of the 404 page', 'cubeb-pagination-and-load-more'); ?></th>
+                    <th scope="row"><?php echo esc_html__('CSS class for next pagination button', 'cubeb-pagination-and-load-more'); ?></th>
                     <td>
-                        <input type="text" name="pagimore_404" value="<?php echo esc_attr(get_option('pagimore_404', '/404/')); ?>" style="width: 300px;">
-                        <p class="description"><?php echo esc_html__('Change the url slug to yours if needed', 'cubeb-pagination-and-load-more'); ?></p>
+                        <input type="text" name="cubeabf_pagi_next_btn_css" value="<?php echo esc_attr(get_option('cubeabf_pagi_next_btn_css', 'product-pagi__next')); ?>" style="width: 300px;">
                     </td>
                 </tr>
-
+                 <tr valign="top">
+                    <th scope="row"><?php echo esc_html__('CSS class for page number buttons', 'cubeb-pagination-and-load-more'); ?></th>
+                    <td>
+                        <input type="text" name="cubeabf_pagi_page_css" value="<?php echo esc_attr(get_option('cubeabf_pagi_page_css', 'product-pagi__page')); ?>" style="width: 300px;">
+                    </td>
+                </tr>
                 <tr valign="top">
-                    <th scope="row"><?php echo esc_html__('Text for not found posts', 'cubeb-pagination-and-load-more'); ?></th>
+                    <th scope="row"><?php echo esc_html__('CSS class for dots between numbers', 'cubeb-pagination-and-load-more'); ?></th>
                     <td>
-                        <input type="text" name="pagimore_notfound_text" value="<?php echo esc_attr(get_option('pagimore_notfound_text', 'No posts found')); ?>" style="width: 300px;">
-                        <p class="description"><?php echo esc_html__('Change the text to yours if needed', 'cubeb-pagination-and-load-more'); ?></p>
+                        <input type="text" name="cubeabf_pagi_page_dots_css" value="<?php echo esc_attr(get_option('cubeabf_pagi_page_dots_css', 'page-dots')); ?>" style="width: 300px;">
                     </td>
                 </tr>
-
                 <tr valign="top">
-                    <th scope="row"><?php echo esc_html__('Posts order', 'cubeb-pagination-and-load-more'); ?></th>
+                    <th scope="row"><?php echo esc_html__('CSS class for load more btn div', 'cubeb-pagination-and-load-more'); ?></th>
                     <td>
-                        <input type="text" name="pagimore_order" value="<?php echo esc_attr(get_option('pagimore_order', 'DESC')); ?>" style="width: 300px;">
-                        <p class="description"><?php echo esc_html__('Change the order to ASC or DESC', 'cubeb-pagination-and-load-more'); ?></p>
+                        <input type="text" name="cubeabf_pagi_load_more_css" value="<?php echo esc_attr(get_option('cubeabf_pagi_load_more_css', 'load-cubeabf')); ?>" style="width: 300px;">
                     </td>
                 </tr>
-
+                 <tr valign="top">
+                    <th scope="row"><?php echo esc_html__('CSS class for loader div', 'cubeb-pagination-and-load-more'); ?></th>
+                    <td>
+                        <input type="text" name="cubeabf_pagi_loader_css" value="<?php echo esc_attr(get_option('cubeabf_pagi_loader_css', 'page-loading')); ?>" style="width: 300px;">
+                    </td>
+                </tr>
                 <tr valign="top">
-                    <th scope="row"><?php echo esc_html__('Posts order by', 'cubeb-pagination-and-load-more'); ?></th>
+                    <th scope="row"><?php echo esc_html__('CSS class for More Loader div', 'cubeb-pagination-and-load-more'); ?></th>
                     <td>
-                        <input type="text" name="pagimore_orderby" value="<?php echo esc_attr(get_option('pagimore_orderby', 'post_date')); ?>" style="width: 300px;">
-                        <p class="description"><?php echo esc_html__('Change the - orderby - to your needs', 'cubeb-pagination-and-load-more'); ?></p>
+                        <input type="text" name="cubeabf_pagi_moreloader_css" value="<?php echo esc_attr(get_option('cubeabf_pagi_moreloader_css', 'page-moreloading')); ?>" style="width: 300px;">
                     </td>
                 </tr>
- 
-            </table>
+                <tr valign="top">
+                    <th scope="row"><?php echo esc_html__('Текст страницы в заголовке вкладки браузера, — «Страница 3»', 'cubeb-pagination-and-load-more'); ?></th>
+                    <td>
+                        <input type="text" name="cubeabf_title_page_name" value="<?php echo esc_attr(get_option('cubeabf_title_page_name', 'Страница')); ?>" style="width: 300px;">
+                    </td>
+                </tr>
+                 
+    </table>
             <?php submit_button(); ?>
         </form>
     </div>
@@ -259,218 +124,140 @@ function pagimore_render_settings_page() {
 }
 
 add_action('admin_init', function() {
-     
-    register_setting('pagimore_settings_group', 'pagimore_query_selector', ['default' => 'post-list', 
-            'sanitize_callback' => function ($value) {
-                  $oldval = trim($value);
-                  $value = ltrim($oldval, '.#'); // removes leading dot or hash if exists
-                return $value === '' ? 'post-list' : $value;
-            }
-        ]);
-     // Checkbox / boolean toggles (sanitize as 0 or 1)
-register_setting('pagimore_settings_group', 'pagimore_enable_pagination', [
-    'default'           => 1,
-    'sanitize_callback' => function ($value) {
-        return (int) (bool) $value;
-    },
-]);
-
-register_setting('pagimore_settings_group', 'pagimore_enable_load_more', [
-    'default'           => 1,
-    'sanitize_callback' => function ($value) {
-        return (int) (bool) $value;
-    },
-]);
-
-register_setting('pagimore_settings_group', 'pagimore_enable_pagination_mobile', [
-    'default'           => 1,
-    'sanitize_callback' => function ($value) {
-        return (int) (bool) $value;
-    },
-]);
-
-register_setting('pagimore_settings_group', 'pagimore_enable_load_more_mobile', [
-    'default'           => 1,
-    'sanitize_callback' => function ($value) {
-        return (int) (bool) $value;
-    },
-]);
-
-register_setting('pagimore_settings_group', 'pagimore_enable_pagination_pc', [
-    'default'           => 1,
-    'sanitize_callback' => function ($value) {
-        return (int) (bool) $value;
-    },
-]);
-
-register_setting('pagimore_settings_group', 'pagimore_enable_load_more_pc', [
-    'default'           => 1,
-    'sanitize_callback' => function ($value) {
-        return (int) (bool) $value;
-    },
-]);
-
-register_setting('pagimore_settings_group', 'pagimore_disable_styles', [
-    'default'           => 0,
-    'sanitize_callback' => function ($value) {
-        return (int) (bool) $value;
-    },
-]);
-
-register_setting('pagimore_settings_group', 'pagimore_remove_pages', [
-    'default'           => 0,
-    'sanitize_callback' => function ($value) {
-        return (int) (bool) $value;
-    },
-]);
-
-// Post type (sanitize as key-friendly string)
-register_setting('pagimore_settings_group', 'pagimore_post_type', [
-    'default'           => 'post',
-    'sanitize_callback' => function ($value) {
-        return sanitize_key($value); // ensures lowercase, a-z0-9_, etc.
-    },
-]);
-
-// Posts per page (sanitize as positive integer)
-register_setting('pagimore_settings_group', 'pagimore_post_per_page', [
-    'default'           => 5,
-    'sanitize_callback' => function ($value) {
-        $value = absint($value);
-        return $value > 0 ? $value : 5;
-    },
-]);
-
-// Colors (sanitize as HEX, fallback to default)
-register_setting('pagimore_settings_group', 'pagimore_pagi_active_color', [
-    'default'           => '#0073aa',
-    'sanitize_callback' => function ($value) {
-    return sanitize_text_field($value);
-    },
-]);
-
-register_setting('pagimore_settings_group', 'pagimore_pagi_hover_active_color', [
-    'default'           => '#005177',
-    'sanitize_callback' => function ($value) {
-return sanitize_text_field($value);
-    },
-]);
+    
 
   register_setting(
-    'pagimore_settings_group',      
-    'pagimore_more_url_param',       
+    'cubeabf_settings_group',      
+    'cubeabf_more_url_param',       
     [
-        'default'           => 'more', // Default value
+        'default'           => 'after', // Default value
         'sanitize_callback' => function ($value) {
             $value = trim($value);
-            return $value === '' ? 'more' : $value;
+            return $value === '' ? 'after' : $value;
         }
     ]
 );
-
-  
-    register_setting('pagimore_settings_group', 'pagimore_prev_arrow_icon', [
+    register_setting('cubeabf_settings_group', 'cubeabf_prev_arrow_icon', [
         'default' => CUBEPAGI_PLUGIN_URL . 'assets/images/slick-arrow-l-active.svg',
         'sanitize_callback' => function ( $value ) {
             $value = esc_url_raw( trim( $value ) );
             return $value === '' ? CUBEPAGI_PLUGIN_URL . 'assets/images/slick-arrow-l-active.svg' : $value;
         }
     ]);
-    register_setting('pagimore_settings_group', 'pagimore_next_arrow_icon', [
+    register_setting('cubeabf_settings_group', 'cubeabf_next_arrow_icon', [
         'default' => CUBEPAGI_PLUGIN_URL . 'assets/images/slick-arrow-r-active.svg',
         'sanitize_callback' => function ( $value ) {
               $value = esc_url_raw( trim( $value ) );
             return $value === '' ? CUBEPAGI_PLUGIN_URL . 'assets/images/slick-arrow-r-active.svg' : $value;
         }
     ]);
-
-    register_setting('pagimore_settings_group', 'pagimore_gif_icon', [
-        'default' => CUBEPAGI_PLUGIN_URL . 'assets/images/dots-loading.gif',
-        'sanitize_callback' => function ( $value ) {
-              $value = esc_url_raw( trim( $value ) );
-            return $value === '' ? CUBEPAGI_PLUGIN_URL . 'assets/images/dots-loading.gif' : $value;
-        }
-    ]);
-     
-    register_setting('pagimore_settings_group', 'pagimore_preloader_text', ['default' => 'Loading...', 
+ register_setting('cubeabf_settings_group', 'cubeabf_subbrands_ppp', ['default' => '6', 
             'sanitize_callback' => function ($value) {
-                  $value = trim($value);
-                return $value === '' ? 'Loading...' : $value;
+                  $oldval = trim($value);
+                  $value = ltrim($oldval, '.#');
+                return $value === '' ? '6' : $value;
             }
         ]);
 
-            register_setting('pagimore_settings_group', 'pagimore_load_more_text', ['default' => 'Load More', 
+      
+         
+    register_setting('cubeabf_settings_group', 'cubeabf_wrapper_css', ['default' => 'ajax-pagination', 
             'sanitize_callback' => function ($value) {
-                  $value = trim($value);
-                return $value === '' ? 'Load More' : $value;
+                  $oldval = trim($value);
+                  $value = ltrim($oldval, '.#');
+                return $value === '' ? 'ajax-pagination' : $value;
+            }
+        ]);
+        register_setting('cubeabf_settings_group', 'cubeabf_add_wrapper_css', ['default' => 'product-pagi', 
+            'sanitize_callback' => function ($value) {
+                  $oldval = trim($value);
+                  $value = ltrim($oldval, '.#');
+                return $value === '' ? 'product-pagi' : $value;
             }
         ]);
 
-        // radio setting: text or gif
-register_setting('pagimore_settings_group', 'pagimore_preloader_type', [
-    'default' => 'text',
-    'sanitize_callback' => function ($value) {
-        return in_array($value, ['text', 'gif'], true) ? $value : 'text';
-    }
-]);
-
-register_setting(
-    'pagimore_settings_group',
-    'pagimore_404',
-    [
-        'default' => '/404/',
-        'sanitize_callback' => function ($value) {
-            $value = trim($value);
-
-            if ($value === '') {
-                return '/404/';
+         register_setting('cubeabf_settings_group', 'cubeabf_wrapper_numbers_css', ['default' => 'product-pagi__wrapper', 
+            'sanitize_callback' => function ($value) {
+                  $oldval = trim($value);
+                  $value = ltrim($oldval, '.#');
+                return $value === '' ? 'product-pagi__wrapper' : $value;
             }
+        ]);
+           register_setting('cubeabf_settings_group', 'cubeabf_pagi_btn_css', ['default' => 'pagination-btn', 
+            'sanitize_callback' => function ($value) {
+                  $oldval = trim($value);
+                  $value = ltrim($oldval, '.#');
+                return $value === '' ? 'pagination-btn' : $value;
+            }
+        ]);
+       register_setting('cubeabf_settings_group', 'cubeabf_pagi_prev_btn_css', ['default' => 'product-pagi__prev', 
+            'sanitize_callback' => function ($value) {
+                 $oldval = trim($value);
+                  $value = ltrim($oldval, '.#');
+                return $value === '' ? 'product-pagi__prev' : $value;
+            }
+        ]);
+         register_setting('cubeabf_settings_group', 'cubeabf_pagi_next_btn_css', ['default' => 'product-pagi__next', 
+            'sanitize_callback' => function ($value) {
+                  $oldval = trim($value);
+                  $value = ltrim($oldval, '.#');
+                return $value === '' ? 'product-pagi__next' : $value;
+            }
+        ]);
+         register_setting('cubeabf_settings_group', 'cubeabf_pagi_page_css', ['default' => 'product-pagi__page', 
+            'sanitize_callback' => function ($value) {
+                  $oldval = trim($value);
+                  $value = ltrim($oldval, '.#');
+                return $value === '' ? 'product-pagi__page' : $value;
+            }
+        ]);
+         register_setting('cubeabf_settings_group', 'cubeabf_pagi_page_dots_css', ['default' => 'page-dots', 
+            'sanitize_callback' => function ($value) {
+                  $oldval = trim($value);
+                  $value = ltrim($oldval, '.#');
+                return $value === '' ? 'page-dots' : $value;
+            }
+        ]);
+         register_setting('cubeabf_settings_group', 'cubeabf_pagi_load_more_css', ['default' => 'load-cubeabf', 
+            'sanitize_callback' => function ($value) {
+                  $oldval = trim($value);
+                  $value = ltrim($oldval, '.#');
+                return $value === '' ? 'load-cubeabf' : $value;
+            }
+        ]);
+         register_setting('cubeabf_settings_group', 'cubeabf_pagi_loader_css', ['default' => 'page-loading', 
+            'sanitize_callback' => function ($value) {
+                 $oldval = trim($value);
+                  $value = ltrim($oldval, '.#');
+                return $value === '' ? 'page-loading' : $value;
+            }
+        ]);
+        register_setting('cubeabf_settings_group', 'cubeabf_pagi_moreloader_css', ['default' => 'page-moreloading', 
+            'sanitize_callback' => function ($value) {
+                 $oldval = trim($value);
+                  $value = ltrim($oldval, '.#');
+                return $value === '' ? 'page-moreloading' : $value;
+            }
+        ]);
 
-            // Ensure leading slash
-            $value = '/' . ltrim($value, '/');
-
-            // Ensure trailing slash
-            $value = trailingslashit($value);
-
-            return $value;
+        register_setting(
+    'cubeabf_license_group',      
+    'cubeabf_license',       
+    [
+        'default'           => '', // Default value
+        'sanitize_callback' => function ($value) {
+            $value = trim($value);
+            return $value === '' ? '' : $value;
         }
     ]
 );
 
-    register_setting(
-    'pagimore_settings_group',      
-    'pagimore_notfound_text',       
-    [
-        'default'           => 'No posts found', // Default value
-        'sanitize_callback' => function ($value) {
-            $value = trim($value);
-            return $value === '' ? 'No posts found' : $value;
-        }
-    ]
-);  
+ register_setting('cubeabf_settings_group', 'cubeabf_title_page_name', ['default' => 'Страница', 
+            'sanitize_callback' => function ($value) {
+                 $oldval = trim($value);
+                  $value = ltrim($oldval, '.#');
+                return $value === '' ? 'Страница' : $value;
+            }
+        ]);
 
- register_setting(
-    'pagimore_settings_group',      
-    'pagimore_order',       
-    [
-        'default'           => 'DESC', // Default value
-        'sanitize_callback' => function ($value) {
-            $value = trim($value);
-            return $value === '' ? 'DESC' : $value;
-        }
-    ]
-);
-
- register_setting(
-    'pagimore_settings_group',      
-    'pagimore_orderby',       
-    [
-        'default'           => 'post_date', // Default value
-        'sanitize_callback' => function ($value) {
-            $value = trim($value);
-            return $value === '' ? 'post_date' : $value;
-        }
-    ]
-);
-       
 });

@@ -13,6 +13,9 @@
   align-items: center;
   justify-content: center;
 }
+.ajax-pagination.product-pagi .product-pagi__wrapper a {
+  text-decoration: none;
+}
 .product-pagi__prev,
 .product-pagi__next,
 .product-pagi__page {
@@ -24,7 +27,9 @@
   line-height: 1.2;
   padding: 0 12px;
   height: 35px;
+  color: black;
 }
+
 .product-pagi__page.active {
   color: white;
 }
@@ -33,7 +38,18 @@
   cursor: not-allowed;
   opacity: 0.5;
 }
-.load-pagimore {
+.product-pagi__prev span,
+.product-pagi__next span {
+  margin-left: 6px;
+}
+.product-pagi__prev.arrow-padding span {
+  margin-right: 36px;
+  margin-left: 0;
+}
+.product-pagi__next.arrow-padding span {
+  margin-left: 38px;
+}
+.load-cubeabf {
   display: flex;
   align-items: center;
   line-height: 1.2;
@@ -45,21 +61,8 @@
   border-radius: 4px;
 }
 
-.loading-more {
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  text-align: center;
-  color: #333333;
-  font-size: 16px;
-  margin-top: 10px;
-}
-.loading-more.loading {
-  opacity: 1;
-}
 .product-pagi__next,
 .product-pagi__prev {
-  text-indent: -9999px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: 10px 10px;
@@ -68,11 +71,12 @@
 .product-pagi__prev.disabled {
   opacity: 0.3;
 }
+
 @media only screen and (min-width: 768px) {
   .ajax-pagination.product-pagi {
     flex-direction: row;
   }
-  .load-pagimore {
+  .load-cubeabf {
     margin-top: 0;
   }
 }
@@ -80,19 +84,23 @@
   .ajax-pagination.product-pagi {
     flex-direction: column;
   }
-  .load-pagimore {
+  .load-cubeabf {
     margin-top: 10px;
   }
+}
+html,
+body {
+  min-height: 100vh; /* 100% of viewport height */
 }
 
 /* Loading   */
 
-.pagimore-grid {
+.post-list-wrap {
   position: relative;
 }
 
 /* Overlay dims the posts */
-.pagimore-grid .overlay-loader {
+.post-list-wrap .overlay-loader {
   position: absolute;
   inset: 0; /* top:0; right:0; bottom:0; left:0 */
   background: rgba(255, 255, 255, 0.35); /* semi-transparent overlay */
@@ -106,12 +114,12 @@
 }
 
 /* Show overlay on load */
-.pagimore-grid.load .overlay-loader {
+.post-list-wrap.load .overlay-loader {
   opacity: 1;
 }
 
 /* Keep preloader fully visible on top of everything */
-.pagimore-grid .page-loading {
+.post-list-wrap .page-loading {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -126,6 +134,75 @@
 }
 
 /* Show the preloader when loading */
-.pagimore-grid .page-loading.loading {
+.post-list-wrap .page-loading.loading {
   opacity: 1;
+}
+
+.page-moreloading {
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  text-align: center;
+  color: #333333;
+  font-size: 16px;
+  margin-top: 10px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+.page-moreloading.loading {
+  opacity: 1;
+}
+/*  Preloaders  */
+
+.dot-loader {
+  display: flex;
+  gap: 6px;
+}
+
+.dot-loader span {
+  width: 10px;
+  height: 10px;
+  background: #000;
+  border-radius: 50%;
+  animation: pulse 1.4s infinite ease-in-out;
+}
+
+.dot-loader span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.dot-loader span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes pulse {
+  0%,
+  80%,
+  100% {
+    opacity: 0.3;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+/*  */
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(0, 0, 0, 0.15);
+  border-top-color: #000;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.cubeabf-pgntn-wrapper {
+  display: flex;
+  align-items: center;
 }
