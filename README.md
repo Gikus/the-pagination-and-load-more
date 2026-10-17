@@ -46,3 +46,5 @@ The flexible Advanced Filters for WP can filter almost anything on a WordPress s
 - Sorting.
 - Chips.
 - Pagination, load more, and infinite scroll (can be used simultaneously or based on screen width).
+
+The filter offers a vast number of features, such as automatic visual color display in both the filter and the chips. Numeric filters display real values. You can have a filter on taxonomy pages where it will filter only by the posts of that specific taxonomy. In the client admin dashboard, you can display only the settings you need. It supports any inserts in the form of images, bg or HTML to the filter items. It also features SSR loading via a filtered link. Position everything exactly how you need it, and much, much more. Almost all interactions with filters and pagination happen directly within the shortcodes.
